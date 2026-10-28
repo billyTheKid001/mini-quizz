@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ORBITALE — Expérience 3D</title>
+  <meta name="description" content="ORBITALE : un voyage interactif en 3D, animé de bout en bout.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <!-- Écran de chargement -->
+  <div class="loader" id="loader">
+    <div class="loader-ring"></div>
+    <span class="loader-count" id="loader-count">0</span>
+  </div>
+
+  <!-- Curseur personnalisé -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursor-dot"></div>
+
+  <!-- Scène 3D principale, fixe en arrière-plan -->
+  <canvas id="hero-canvas"></canvas>
+
+  <header class="nav">
+    <a href="#hero" class="nav-logo">ORBITALE<span>.</span></a>
+    <nav class="nav-links">
+      <a href="#univers" data-magnetic>Univers</a>
+      <a href="#galerie" data-magnetic>Galerie</a>
+      <a href="#chiffres" data-magnetic>Chiffres</a>
+      <a href="#contact" data-magnetic>Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="hero" class="hero">
+      <p class="hero-kicker" data-reveal>Expérience interactive — 2026</p>
+      <h1 class="hero-title">
+        <span class="line"><span class="word">Entrez</span> <span class="word">dans</span></span>
+        <span class="line"><span class="word accent">la&nbsp;3D</span></span>
+      </h1>
+      <p class="hero-sub" data-reveal>Bougez la souris. Scrollez. Tout réagit.</p>
+      <a href="#univers" class="btn" data-magnetic><span>Commencer le voyage</span></a>
+      <div class="scroll-hint"><span></span></div>
+    </section>
+
+    <section id="univers" class="features">
+      <h2 class="section-title" data-split>Un univers vivant</h2>
+      <div class="cards">
+        <article class="card" data-tilt>
+          <div class="card-glow"></div>
+          <div class="card-icon">◆</div>
+          <h3>Formes génératives</h3>
+          <p>Des géométries qui respirent, se déforment et réagissent à chacun de vos gestes.</p>
+        </article>
+        <article class="card" data-tilt>
+          <div class="card-glow"></div>
+          <div class="card-icon">✦</div>
+          <h3>Particules</h3>
+          <p>Des milliers de points de lumière qui dérivent dans l'espace et suivent votre curseur.</p>
+        </article>
+        <article class="card" data-tilt>
+          <div class="card-glow"></div>
+          <div class="card-icon">◎</div>
+          <h3>Animations au scroll</h3>
+          <p>Chaque section se dévoile au rythme de votre défilement, image par image.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="galerie" class="showcase">
+      <div class="showcase-sticky">
+        <canvas id="showcase-canvas"></canvas>
+        <div class="showcase-text">
+          <h2 class="section-title" data-split>La galerie</h2>
+          <p class="showcase-label" id="showcase-label">01 — Tore</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="chiffres" class="stats">
+      <div class="stat"><span class="stat-num" data-count="60">0</span><span class="stat-unit">FPS</span><p>Fluidité visée</p></div>
+      <div class="stat"><span class="stat-num" data-count="4000">0</span><span class="stat-unit">+</span><p>Particules animées</p></div>
+      <div class="stat"><span class="stat-num" data-count="0">0</span><span class="stat-unit">ligne de Java</span><p>Promis, juré</p></div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="marquee"><div class="marquee-track">ORBITALE ✦ 3D ✦ ANIMATIONS ✦ ORBITALE ✦ 3D ✦ ANIMATIONS ✦&nbsp;</div></div>
+      <h2 class="contact-title" data-split>Prêt à décoller ?</h2>
+      <a href="mailto:contact@example.com" class="btn btn-big" data-magnetic><span>Écrivez-nous</span></a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 ORBITALE — fait avec Three.js &amp; GSAP</p>
+  </footer>
+</body>
+</html>
