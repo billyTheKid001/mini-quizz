@@ -1,8 +1,6 @@
 // Animations de l'interface : loader, curseur, reveals, scroll, interactions.
 // GSAP et ScrollTrigger sont chargés en global (scripts defer).
 
-const HOVER_TARGETS = 'a, button, [data-tilt], [data-magnetic]';
-
 // Formate un entier avec des espaces pour les milliers : 4000 -> "4 000"
 function formatNumber(n) {
   return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
@@ -29,8 +27,7 @@ export function initAnims({ hero, showcase } = {}) {
   const loader = document.getElementById('loader');
   const loaderCount = document.getElementById('loader-count');
 
-  // Fonctions communes, indépendantes de GSAP
-  initNav();
+  // Nav, curseur et effet magnétique sont gérés par common.js
   initAnchors(reduced);
   initMarquee();
 
@@ -47,10 +44,6 @@ export function initAnims({ hero, showcase } = {}) {
 
   gsap.registerPlugin(ScrollTrigger);
 
-  if (finePointer) initCursor(gsap);
-  if (finePointer && !reduced) {
-    initMagnetic(gsap);
-  }
   initTilt(gsap, reduced, finePointer && !reduced);
   initSplit(gsap, reduced);
   initReveals(gsap, reduced);
@@ -129,75 +122,6 @@ function initLoaderAndIntro(gsap, ScrollTrigger, loader, loaderCount, reduced) {
     .to(heroReveals, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.12 }, '-=0.8');
   if (heroBtn) tl.to(heroBtn, { autoAlpha: 1, scale: 1, duration: 1, ease: 'back.out(1.7)' }, '-=0.7');
   if (hint) tl.to(hint, { autoAlpha: 1, duration: 0.6 }, '-=0.4');
-}
-
-/* ------------------------------------------------------------------------ */
-/* Curseur personnalisé                                                      */
-/* ------------------------------------------------------------------------ */
-function initCursor(gsap) {
-  const cursor = document.getElementById('cursor');
-  const dot = document.getElementById('cursor-dot');
-  if (!cursor || !dot) return;
-
-  document.documentElement.classList.add('has-cursor');
-  gsap.set([cursor, dot], { xPercent: -50, yPercent: -50 });
-
-  // quickTo = interpolation fluide (lerp) gérée par GSAP
-  const cx = gsap.quickTo(cursor, 'x', { duration: 0.45, ease: 'power3' });
-  const cy = gsap.quickTo(cursor, 'y', { duration: 0.45, ease: 'power3' });
-  const dx = gsap.quickTo(dot, 'x', { duration: 0.1, ease: 'power3' });
-  const dy = gsap.quickTo(dot, 'y', { duration: 0.1, ease: 'power3' });
-  let visible = false;
-
-  window.addEventListener('pointermove', (e) => {
-    if (e.pointerType && e.pointerType !== 'mouse') return;
-    if (!visible) {
-      // Premier mouvement : on place sans animation
-      gsap.set([cursor, dot], { x: e.clientX, y: e.clientY });
-      cursor.classList.add('is-visible');
-      dot.classList.add('is-visible');
-      visible = true;
-    }
-    cx(e.clientX);
-    cy(e.clientY);
-    dx(e.clientX);
-    dy(e.clientY);
-  }, { passive: true });
-
-  document.addEventListener('mouseleave', () => {
-    cursor.classList.remove('is-visible');
-    dot.classList.remove('is-visible');
-    visible = false;
-  });
-
-  // Agrandissement au survol des éléments interactifs
-  document.addEventListener('mouseover', (e) => {
-    const hit = e.target instanceof Element && e.target.closest(HOVER_TARGETS);
-    cursor.classList.toggle('is-hover', Boolean(hit));
-  });
-}
-
-/* ------------------------------------------------------------------------ */
-/* Effet magnétique                                                          */
-/* ------------------------------------------------------------------------ */
-function initMagnetic(gsap) {
-  document.querySelectorAll('[data-magnetic]').forEach((el) => {
-    const inner = el.querySelector('span');
-    const strength = el.classList.contains('btn') ? 0.35 : 0.45;
-
-    el.addEventListener('mousemove', (e) => {
-      const r = el.getBoundingClientRect();
-      const relX = e.clientX - (r.left + r.width / 2);
-      const relY = e.clientY - (r.top + r.height / 2);
-      gsap.to(el, { x: relX * strength, y: relY * strength, duration: 0.4, ease: 'power3.out', overwrite: 'auto' });
-      if (inner) gsap.to(inner, { x: relX * 0.12, y: relY * 0.12, duration: 0.4, ease: 'power3.out', overwrite: 'auto' });
-    });
-
-    el.addEventListener('mouseleave', () => {
-      gsap.to(el, { x: 0, y: 0, duration: 1, ease: 'elastic.out(1, 0.35)', overwrite: 'auto' });
-      if (inner) gsap.to(inner, { x: 0, y: 0, duration: 1, ease: 'elastic.out(1, 0.35)', overwrite: 'auto' });
-    });
-  });
 }
 
 /* ------------------------------------------------------------------------ */
@@ -390,36 +314,6 @@ function initScrollScenes(gsap, ScrollTrigger, hero, showcase, reduced) {
       scrollTrigger: { trigger: heroEl, start: 'top top', end: 'bottom top', scrub: true },
     });
   }
-}
-
-/* ------------------------------------------------------------------------ */
-/* Navigation : masquage au scroll                                           */
-/* ------------------------------------------------------------------------ */
-function initNav() {
-  const nav = document.querySelector('.nav');
-  if (!nav) return;
-  let lastY = window.scrollY;
-  let ticking = false;
-
-  const update = () => {
-    const y = window.scrollY;
-    nav.classList.toggle('is-scrolled', y > 20);
-    if (y > lastY + 4 && y > 120) nav.classList.add('is-hidden');
-    else if (y < lastY - 4 || y <= 120) nav.classList.remove('is-hidden');
-    lastY = y;
-    ticking = false;
-  };
-
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(update);
-    }
-  }, { passive: true });
-
-  // Réaffiche la nav quand un lien reçoit le focus clavier
-  nav.addEventListener('focusin', () => nav.classList.remove('is-hidden'));
-  update();
 }
 
 /* ------------------------------------------------------------------------ */

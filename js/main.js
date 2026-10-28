@@ -1,8 +1,10 @@
 // Point d'entrée : branche les scènes 3D et les animations une fois GSAP chargé.
+import { initCommon } from './common.js';
 import { initHero, initShowcase } from './scene.js';
 import { initAnims } from './anims.js';
 
 function start() {
+  initCommon();
   const hero = initHero(document.getElementById('hero-canvas'));
   const showcase = initShowcase(document.getElementById('showcase-canvas'), (label) => {
     document.getElementById('showcase-label').textContent = label;

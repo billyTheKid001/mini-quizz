@@ -317,6 +317,100 @@ main,
   transform-origin: left;
 }
 
+.nav-links a[aria-current="page"] {
+  color: var(--text);
+}
+
+.nav-links a[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+/* Bouton burger (mobile) */
+.nav-burger {
+  display: none;
+  position: relative;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  cursor: pointer;
+}
+
+.nav-burger span {
+  position: absolute;
+  left: 13px;
+  right: 13px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--text);
+  transition: transform 0.5s var(--ease), top 0.5s var(--ease);
+}
+
+.nav-burger span:first-child { top: 17px; }
+.nav-burger span:last-child { top: 25px; }
+
+.menu-open .nav-burger span:first-child { top: 21px; transform: rotate(45deg); }
+.menu-open .nav-burger span:last-child { top: 21px; transform: rotate(-45deg); }
+
+.menu-open {
+  overflow: hidden;
+}
+
+/* Rideau de transition entre pages */
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(124, 92, 255, 0.35), transparent 60%),
+    var(--bg);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.6s var(--ease);
+}
+
+.curtain::after {
+  content: "ORBITALE.";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 8vw, 6rem);
+  letter-spacing: -0.04em;
+  color: var(--text);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.curtain.is-covering,
+.curtain.is-leaving {
+  transform: scaleY(1);
+}
+
+.curtain.is-covering::after,
+.curtain.is-leaving::after {
+  opacity: 1;
+}
+
+.curtain.is-leaving {
+  transform-origin: bottom;
+  pointer-events: all;
+}
+
+/* Sans JS, le rideau d'entrée finit quand même par se retirer */
+.curtain.is-covering {
+  animation: curtain-fallback 0.01s linear 3s forwards;
+}
+
+@keyframes curtain-fallback {
+  to { transform: scaleY(0); }
+}
+
 /* --- Éléments communs ---------------------------------------------------- */
 [data-magnetic] {
   display: inline-block;
@@ -728,13 +822,81 @@ main,
 
 /* --- Footer -------------------------------------------------------------- */
 .footer {
-  padding: 32px var(--gutter);
+  padding: clamp(56px, 8vw, 96px) var(--gutter) 32px;
   border-top: 1px solid var(--glass-border);
-  text-align: center;
+  background: var(--bg);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.footer-grid {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)) auto;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
+}
+
+.footer-brand p {
+  margin-top: 12px;
+  max-width: 32ch;
+}
+
+.footer h4 {
+  margin-bottom: 14px;
+  font-family: var(--font-display);
   font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-links a {
+  width: fit-content;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover,
+.footer-links a:focus-visible,
+.footer-links a[aria-current="page"] {
+  color: var(--text);
+}
+
+.footer-top {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease, transform 0.5s var(--ease);
+}
+
+.footer-top:hover,
+.footer-top:focus-visible {
+  border-color: var(--cyan);
+  transform: translateY(-4px);
+}
+
+.footer-copy {
+  max-width: var(--maxw);
+  margin: clamp(40px, 6vw, 72px) auto 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--glass-border);
+  font-size: 0.78rem;
   letter-spacing: 0.06em;
   color: rgba(242, 240, 255, 0.4);
-  background: var(--bg);
+  text-align: center;
 }
 
 /* --- Keyframes ----------------------------------------------------------- */
@@ -787,6 +949,87 @@ main,
 
 /* --- Responsive ---------------------------------------------------------- */
 @media (max-width: 900px) {
+  /* Menu plein écran */
+  .nav-burger {
+    display: block;
+  }
+
+  .nav-links {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    padding: var(--nav-h) var(--gutter) 32px;
+    background:
+      radial-gradient(circle at 80% 10%, rgba(124, 92, 255, 0.25), transparent 50%),
+      radial-gradient(circle at 10% 90%, rgba(255, 61, 129, 0.18), transparent 50%),
+      rgba(5, 5, 10, 0.96);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    clip-path: circle(0% at calc(100% - var(--gutter) - 22px) calc(var(--nav-h) / 2));
+    visibility: hidden;
+    transition: clip-path 0.7s var(--ease), visibility 0s linear 0.7s;
+  }
+
+  .menu-open .nav-links {
+    clip-path: circle(150% at calc(100% - var(--gutter) - 22px) calc(var(--nav-h) / 2));
+    visibility: visible;
+    transition: clip-path 0.7s var(--ease), visibility 0s;
+  }
+
+  .nav-links a {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 9vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.6s var(--ease), color 0.3s ease;
+  }
+
+  .menu-open .nav-links a {
+    opacity: 1;
+    transform: none;
+  }
+
+  .menu-open .nav-links a:nth-child(2) { transition-delay: 0.05s; }
+  .menu-open .nav-links a:nth-child(3) { transition-delay: 0.1s; }
+  .menu-open .nav-links a:nth-child(4) { transition-delay: 0.15s; }
+  .menu-open .nav-links a:nth-child(5) { transition-delay: 0.2s; }
+  .menu-open .nav-links a:nth-child(6) { transition-delay: 0.25s; }
+
+  .nav-links a[aria-current="page"] {
+    color: var(--cyan);
+  }
+
+  .nav-links a::after {
+    display: none;
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  /* Le flou/transform de la nav piégeraient le menu fixe : on les coupe */
+  .menu-open .nav {
+    transform: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: transparent;
+    border-bottom-color: transparent;
+  }
+
+  .nav-logo {
+    position: relative;
+    z-index: 2;
+  }
   .cards {
     grid-template-columns: minmax(0, 1fr);
     max-width: 560px;
@@ -818,23 +1061,6 @@ main,
 
   .nav-logo {
     font-size: 1rem;
-  }
-
-  /* Liens compacts, défilables dans la nav si l'écran est très étroit */
-  .nav-links {
-    gap: 12px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .nav-links::-webkit-scrollbar {
-    display: none;
-  }
-
-  .nav-links a {
-    font-size: 0.72rem;
-    letter-spacing: 0.02em;
-    text-transform: none;
   }
 
   .hero {
