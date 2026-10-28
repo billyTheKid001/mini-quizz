@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Studio — ORBITALE</title>
+  <meta name="description" content="ORBITALE, c'est 24 personnes réparties dans 6 villes qui fabriquent des expériences 3D interactives. Notre histoire, nos valeurs, notre équipe et nos offres d'emploi.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/studio.css">
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="js/studio.js"></script>
+</head>
+<body>
+  <div class="curtain is-covering" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a href="index.html" class="nav-logo">ORBITALE<span>.</span></a>
+    <nav class="nav-links" id="nav-links" aria-label="Navigation principale">
+      <a href="index.html" data-magnetic>Accueil</a>
+      <a href="projets.html" data-magnetic>Projets</a>
+      <a href="labo.html" data-magnetic>Labo</a>
+      <a href="studio.html" data-magnetic>Studio</a>
+      <a href="jeu.html" data-magnetic>Jeu</a>
+      <a href="contact.html" data-magnetic>Contact</a>
+    </nav>
+    <button class="nav-burger" id="nav-burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
+  </header>
+
+  <main class="st">
+
+    <!-- ================================================================ -->
+    <!-- Hero : globe 3D                                                   -->
+    <!-- ================================================================ -->
+    <section class="st-hero" id="studio-hero" aria-labelledby="st-hero-title">
+      <canvas class="st-globe" id="st-globe" role="img" aria-label="Globe en points lumineux reliant les six villes du studio : Paris, Montréal, São Paulo, Lagos, Tokyo et Melbourne. Faites-le tourner en le faisant glisser."></canvas>
+
+      <div class="st-hero-inner">
+        <p class="st-kicker st-hero-kicker">À propos — depuis 2019</p>
+        <h1 class="st-hero-title" id="st-hero-title">
+          <span class="st-line"><span class="st-word">Le</span></span>
+          <span class="st-line"><span class="st-word accent">Studio</span></span>
+        </h1>
+        <p class="st-hero-sub">Vingt-quatre esprits curieux, six villes, quatre continents. Une seule obsession&nbsp;: rendre la 3D aussi naturelle qu'un clic.</p>
+
+        <div class="st-offices">
+          <p class="st-offices-title" id="st-offices-title">Nos bureaux <span>— heure locale</span></p>
+          <ul class="st-offices-list" aria-labelledby="st-offices-title">
+            <li><button type="button" class="st-office" data-city="0"><span class="st-office-dot is-hq"></span><span class="st-office-name">Paris <em>QG</em></span><time class="st-office-time" data-tz="Europe/Paris">--:--</time></button></li>
+            <li><button type="button" class="st-office" data-city="1"><span class="st-office-dot"></span><span class="st-office-name">Montréal</span><time class="st-office-time" data-tz="America/Toronto">--:--</time></button></li>
+            <li><button type="button" class="st-office" data-city="2"><span class="st-office-dot"></span><span class="st-office-name">São Paulo</span><time class="st-office-time" data-tz="America/Sao_Paulo">--:--</time></button></li>
+            <li><button type="button" class="st-office" data-city="3"><span class="st-office-dot"></span><span class="st-office-name">Lagos</span><time class="st-office-time" data-tz="Africa/Lagos">--:--</time></button></li>
+            <li><button type="button" class="st-office" data-city="4"><span class="st-office-dot"></span><span class="st-office-name">Tokyo</span><time class="st-office-time" data-tz="Asia/Tokyo">--:--</time></button></li>
+            <li><button type="button" class="st-office" data-city="5"><span class="st-office-dot"></span><span class="st-office-name">Melbourne</span><time class="st-office-time" data-tz="Australia/Melbourne">--:--</time></button></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="st-globe-anchor" id="st-globe-anchor" aria-hidden="true"></div>
+
+      <p class="st-drag-hint" aria-hidden="true"><span class="st-drag-icon"></span>Glissez pour faire tourner le globe</p>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Manifeste                                                         -->
+    <!-- ================================================================ -->
+    <section class="st-manifesto" aria-label="Manifeste">
+      <p class="st-manifesto-text" id="st-manifesto-text">On fabrique des expériences 3D qui se chargent vite, se comprennent tout de suite et qu'on a envie de toucher. Pas de démo technique pour la démo&nbsp;: chaque polygone doit raconter quelque chose.</p>
+      <div class="st-manifesto-meta">
+        <p data-reveal><strong>24</strong> personnes</p>
+        <p data-reveal style="--d: 0.1s"><strong>6</strong> villes</p>
+        <p data-reveal style="--d: 0.2s"><strong>9</strong> langues parlées</p>
+        <p data-reveal style="--d: 0.3s"><strong>1</strong> plante verte</p>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Notre histoire : frise                                            -->
+    <!-- ================================================================ -->
+    <section class="st-section st-history" id="histoire" aria-labelledby="st-history-title">
+      <span class="st-ghost" data-speed="-0.25" aria-hidden="true">2019</span>
+      <header class="st-head">
+        <p class="st-kicker" data-reveal>01 — Notre histoire</p>
+        <h2 class="section-title" id="st-history-title" data-reveal>Sept ans<br><span class="accent">en orbite</span></h2>
+        <p class="st-lead" data-reveal>D'un garage parisien à un réseau de six villes. Petite chronologie des moments où tout a basculé (dans le bon sens).</p>
+      </header>
+
+      <div class="st-tl" id="st-tl">
+        <div class="st-tl-rail" aria-hidden="true"><span class="st-tl-fill" id="st-tl-fill"></span></div>
+        <ol class="st-tl-list">
+        <li class="st-tl-item" data-reveal>
+          <span class="st-tl-dot" aria-hidden="true"></span>
+          <article class="st-tl-card">
+            <p class="st-tl-year">2019</p>
+            <h3>Un garage, deux écrans</h3>
+            <p>Inès et Théo quittent l'un le cinéma d'animation, l'autre le jeu vidéo. Ils montent ORBITALE dans un ancien atelier de vélos, avec un radiateur capricieux et une conviction&nbsp;: le web mérite mieux que des carrousels.</p>
+          </article>
+        </li>
+        <li class="st-tl-item" data-reveal>
+          <span class="st-tl-dot" aria-hidden="true"></span>
+          <article class="st-tl-card">
+            <p class="st-tl-year">2020</p>
+            <h3>Premier shader en production</h3>
+            <p>Un configurateur 3D pour un fabricant de mobilier&nbsp;: 40&nbsp;000 personnes le testent la première semaine. Le studio passe en télétravail total… et découvre qu'on peut collaborer très bien à des milliers de kilomètres.</p>
+          </article>
+        </li>
+        <li class="st-tl-item" data-reveal>
+          <span class="st-tl-dot" aria-hidden="true"></span>
+          <article class="st-tl-card">
+            <p class="st-tl-year">2021</p>
+            <h3>Bonjour Montréal</h3>
+            <p>Hugo ouvre notre premier bureau hors de France, au-dessus d'une boulangerie. L'équipe passe à neuf personnes et adopte officiellement le décalage horaire comme outil de production.</p>
+          </article>
+        </li>
+        <li class="st-tl-item" data-reveal>
+          <span class="st-tl-dot" aria-hidden="true"></span>
+          <article class="st-tl-card">
+            <p class="st-tl-year">2022</p>
+            <h3>Naissance du Labo</h3>
+            <p>Un vendredi sur deux devient sacré&nbsp;: on expérimente sans client ni brief. Une de ces expériences, un océan de particules, remporte le grand prix d'un festival international de création numérique.</p>
+          </article>
+        </li>
+        <li class="st-tl-item" data-reveal>
+          <span class="st-tl-dot" aria-hidden="true"></span>
+          <article class="st-tl-card">
+            <p class="st-tl-year">2023</p>
+            <h3>Le réseau s'agrandit</h3>
+            <p>Lagos, São Paulo et Tokyo rejoignent l'aventure sous forme de studios partenaires. On travaille désormais 24&nbsp;heures sur 24, sans que personne ne travaille la nuit.</p>
+          </article>
+        </li>
+        <li class="st-tl-item" data-reveal>
+          <span class="st-tl-dot" aria-hidden="true"></span>
+          <article class="st-tl-card">
+            <p class="st-tl-year">2024</p>
+            <h3>Cap des 100 projets</h3>
+            <p>Centième projet livré&nbsp;: un musée virtuel visitable depuis un téléphone d'entrée de gamme. Pour fêter ça, on sort notre premier jeu jouable directement dans le navigateur.</p>
+          </article>
+        </li>
+        <li class="st-tl-item" data-reveal>
+          <span class="st-tl-dot" aria-hidden="true"></span>
+          <article class="st-tl-card">
+            <p class="st-tl-year">2025</p>
+            <h3>Melbourne &amp; WebGPU</h3>
+            <p>Noé lance l'antenne australienne et notre pipeline WebGPU. Nos scènes deviennent deux fois plus légères et trois fois plus fluides. Le radiateur, lui, est toujours capricieux.</p>
+          </article>
+        </li>
+        <li class="st-tl-item is-now" data-reveal>
+          <span class="st-tl-dot" aria-hidden="true"></span>
+          <article class="st-tl-card">
+            <p class="st-tl-year">2026</p>
+            <h3>Aujourd'hui</h3>
+            <p>Vingt-quatre personnes, un nouveau studio parisien avec salle de capture de mouvement, et toujours la même règle&nbsp;: si ça ne donne pas envie de toucher l'écran, on recommence.</p>
+          </article>
+        </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Valeurs                                                           -->
+    <!-- ================================================================ -->
+    <section class="st-section st-values" id="valeurs" aria-labelledby="st-values-title">
+      <header class="st-head">
+        <p class="st-kicker" data-reveal>02 — Nos valeurs</p>
+        <h2 class="section-title" id="st-values-title" data-reveal>Ce qui nous<br><span class="accent">fait tourner</span></h2>
+      </header>
+
+      <ul class="st-values-grid">
+        <li class="st-value" data-reveal>
+          <svg class="st-value-icon" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r="7" pathLength="1"/>
+            <ellipse cx="32" cy="32" rx="25" ry="10" transform="rotate(-25 32 32)" pathLength="1"/>
+            <g class="st-spin"><circle cx="54" cy="22" r="3" pathLength="1"/></g>
+          </svg>
+          <p class="st-value-num">01</p>
+          <h3>Curiosité radicale</h3>
+          <p>On pose des questions bêtes avant d'écrire du code intelligent. Chaque projet commence par une semaine de prototypes jetables.</p>
+        </li>
+        <li class="st-value" data-reveal style="--d: 0.1s">
+          <svg class="st-value-icon" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="28" cy="28" r="17" pathLength="1"/>
+            <path d="M40.5 40.5L55 55" pathLength="1"/>
+            <path d="M28 19v18M19 28h18" pathLength="1"/>
+          </svg>
+          <p class="st-value-num">02</p>
+          <h3>Le détail obsessionnel</h3>
+          <p>Un easing raté, c'est une poignée de main molle. On peaufine chaque transition jusqu'à ce qu'elle paraisse évidente.</p>
+        </li>
+        <li class="st-value" data-reveal style="--d: 0.2s">
+          <svg class="st-value-icon" viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M16 22h32a10 10 0 0 1 10 10v5a8 8 0 0 1-14 5l-4-4H24l-4 4a8 8 0 0 1-14-5v-5a10 10 0 0 1 10-10z" pathLength="1"/>
+            <path d="M20 27v10M15 32h10" pathLength="1"/>
+            <circle cx="43" cy="29" r="2" pathLength="1"/>
+            <circle cx="49" cy="35" r="2" pathLength="1"/>
+          </svg>
+          <p class="st-value-num">03</p>
+          <h3>Jouer sérieusement</h3>
+          <p>Le jeu est notre méthode de travail. Si l'équipe ne s'amuse pas en fabriquant, le public ne s'amusera pas en utilisant.</p>
+        </li>
+        <li class="st-value" data-reveal style="--d: 0.3s">
+          <svg class="st-value-icon" viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M54 8C34 10 20 24 18 46c18 0 32-14 36-38z" pathLength="1"/>
+            <path d="M46 16L10 56" pathLength="1"/>
+            <path d="M26 38h14M33 29h14" pathLength="1"/>
+          </svg>
+          <p class="st-value-num">04</p>
+          <h3>Faire léger</h3>
+          <p>Une belle scène qui met dix secondes à charger est une scène ratée. On vise moins de 3&nbsp;Mo et 60&nbsp;images par seconde, même sur un vieux téléphone.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Équipe                                                            -->
+    <!-- ================================================================ -->
+    <section class="st-section st-team" id="equipe" aria-labelledby="st-team-title">
+      <header class="st-head st-head-split">
+        <div>
+          <p class="st-kicker" data-reveal>03 — L'équipe</p>
+          <h2 class="section-title" id="st-team-title" data-reveal>Les humains<br><span class="accent">derrière les pixels</span></h2>
+        </div>
+        <p class="st-lead" data-reveal>Huit des vingt-quatre visages d'ORBITALE. Survolez, touchez ou parcourez les cartes au clavier pour découvrir leur face cachée.</p>
+      </header>
+
+      <ul class="st-team-grid">
+        <li class="st-member" data-reveal>
+          <div class="st-member-inner" tabindex="0" role="group" aria-label="Inès Marchetti, co-fondatrice et directrice de création">
+            <div class="st-member-face st-member-front">
+              <div class="st-avatar" data-seed="Inès Marchetti" style="--h1: 262; --h2: 320" aria-hidden="true"><span>IM</span></div>
+              <h3>Inès Marchetti</h3>
+              <p class="st-member-role">Co-fondatrice · Direction de création</p>
+              <p class="st-member-quote">« Dessine des mondes entiers au dos des tickets de métro. »</p>
+              <span class="st-member-city">Paris</span>
+            </div>
+            <div class="st-member-face st-member-back">
+              <p class="st-member-label">Fun fact</p>
+              <p class="st-member-fact">A baptisé chaque serveur du studio du nom d'une planète naine. Cérès est la plus fiable.</p>
+              <ul class="st-skills" aria-label="Compétences">
+                <li>Direction artistique</li><li>Blender</li><li>Storytelling</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="st-member" data-reveal style="--d: 0.08s">
+          <div class="st-member-inner" tabindex="0" role="group" aria-label="Théo Vasseur, co-fondateur et directeur technique">
+            <div class="st-member-face st-member-front">
+              <div class="st-avatar" data-seed="Théo Vasseur" style="--h1: 190; --h2: 250" aria-hidden="true"><span>TV</span></div>
+              <h3>Théo Vasseur</h3>
+              <p class="st-member-role">Co-fondateur · Direction technique</p>
+              <p class="st-member-quote">« Parle couramment le GLSL, et approximativement le français. »</p>
+              <span class="st-member-city">Paris</span>
+            </div>
+            <div class="st-member-face st-member-back">
+              <p class="st-member-label">Fun fact</p>
+              <p class="st-member-fact">Sa toute première démo 3D tournait à 4 images par seconde. Il l'a encadrée dans son bureau.</p>
+              <ul class="st-skills" aria-label="Compétences">
+                <li>WebGL</li><li>GLSL</li><li>Architecture</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="st-member" data-reveal style="--d: 0.16s">
+          <div class="st-member-inner" tabindex="0" role="group" aria-label="Awa Diallo-Renaud, lead développeuse créative">
+            <div class="st-member-face st-member-front">
+              <div class="st-avatar" data-seed="Awa Diallo-Renaud" style="--h1: 330; --h2: 30" aria-hidden="true"><span>AD</span></div>
+              <h3>Awa Diallo-Renaud</h3>
+              <p class="st-member-role">Lead développeuse créative</p>
+              <p class="st-member-quote">« Transforme les bugs en effets spéciaux. Volontairement, la plupart du temps. »</p>
+              <span class="st-member-city">Lagos</span>
+            </div>
+            <div class="st-member-face st-member-back">
+              <p class="st-member-label">Fun fact</p>
+              <p class="st-member-fact">Détient le record interne du plus long shader sans un seul commentaire&nbsp;: 412 lignes.</p>
+              <ul class="st-skills" aria-label="Compétences">
+                <li>Three.js</li><li>GSAP</li><li>TypeScript</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="st-member" data-reveal style="--d: 0.24s">
+          <div class="st-member-inner" tabindex="0" role="group" aria-label="Kenji Morel, artiste 3D et technical artist">
+            <div class="st-member-face st-member-front">
+              <div class="st-avatar" data-seed="Kenji Morel" style="--h1: 160; --h2: 210" aria-hidden="true"><span>KM</span></div>
+              <h3>Kenji Morel</h3>
+              <p class="st-member-role">Artiste 3D · Technical artist</p>
+              <p class="st-member-quote">« Optimise un modèle jusqu'à ce qu'il pleure, puis encore un peu. »</p>
+              <span class="st-member-city">Tokyo</span>
+            </div>
+            <div class="st-member-face st-member-back">
+              <p class="st-member-label">Fun fact</p>
+              <p class="st-member-fact">Collectionne les théières low-poly. Il en a modélisé 37, aucune ne dépasse 300 triangles.</p>
+              <ul class="st-skills" aria-label="Compétences">
+                <li>Blender</li><li>Houdini</li><li>Baking</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="st-member" data-reveal>
+          <div class="st-member-inner" tabindex="0" role="group" aria-label="Lucía Fernandes, designer UI et motion">
+            <div class="st-member-face st-member-front">
+              <div class="st-avatar" data-seed="Lucía Fernandes" style="--h1: 290; --h2: 190" aria-hidden="true"><span>LF</span></div>
+              <h3>Lucía Fernandes</h3>
+              <p class="st-member-role">Designer UI · Motion</p>
+              <p class="st-member-quote">« Estime que chaque bouton mérite une entrée en scène. »</p>
+              <span class="st-member-city">São Paulo</span>
+            </div>
+            <div class="st-member-face st-member-back">
+              <p class="st-member-label">Fun fact</p>
+              <p class="st-member-fact">Chronomètre les portes d'ascenseur pour étudier leur courbe d'accélération. Verdict&nbsp;: trop linéaire.</p>
+              <ul class="st-skills" aria-label="Compétences">
+                <li>Figma</li><li>Motion design</li><li>Prototypage</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="st-member" data-reveal style="--d: 0.08s">
+          <div class="st-member-inner" tabindex="0" role="group" aria-label="Hugo Lambert-Okafor, développeur WebGL et audio">
+            <div class="st-member-face st-member-front">
+              <div class="st-avatar" data-seed="Hugo Lambert-Okafor" style="--h1: 220; --h2: 175" aria-hidden="true"><span>HL</span></div>
+              <h3>Hugo Lambert-Okafor</h3>
+              <p class="st-member-role">Développeur WebGL · Audio</p>
+              <p class="st-member-quote">« Synchronise tout sur un tempo, y compris la machine à café. »</p>
+              <span class="st-member-city">Montréal</span>
+            </div>
+            <div class="st-member-face st-member-back">
+              <p class="st-member-label">Fun fact</p>
+              <p class="st-member-fact">A composé la musique d'attente du standard téléphonique. En 7/8, évidemment.</p>
+              <ul class="st-skills" aria-label="Compétences">
+                <li>Web Audio</li><li>WebGPU</li><li>Rust</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="st-member" data-reveal style="--d: 0.16s">
+          <div class="st-member-inner" tabindex="0" role="group" aria-label="Margaux Peyrot, productrice et cheffe de projet">
+            <div class="st-member-face st-member-front">
+              <div class="st-avatar" data-seed="Margaux Peyrot" style="--h1: 345; --h2: 265" aria-hidden="true"><span>MP</span></div>
+              <h3>Margaux Peyrot</h3>
+              <p class="st-member-role">Productrice · Cheffe de projet</p>
+              <p class="st-member-quote">« Tient un planning comme d'autres tiennent un sabre laser. »</p>
+              <span class="st-member-city">Paris</span>
+            </div>
+            <div class="st-member-face st-member-back">
+              <p class="st-member-label">Fun fact</p>
+              <p class="st-member-fact">N'a jamais raté une deadline. A raté trois trains pour y parvenir.</p>
+              <ul class="st-skills" aria-label="Compétences">
+                <li>Production</li><li>Agilité</li><li>Diplomatie</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="st-member" data-reveal style="--d: 0.24s">
+          <div class="st-member-inner" tabindex="0" role="group" aria-label="Noé Brunet-Sato, ingénieur performance">
+            <div class="st-member-face st-member-front">
+              <div class="st-avatar" data-seed="Noé Brunet-Sato" style="--h1: 180; --h2: 300" aria-hidden="true"><span>NB</span></div>
+              <h3>Noé Brunet-Sato</h3>
+              <p class="st-member-role">Ingénieur performance</p>
+              <p class="st-member-quote">« Gagne des millisecondes comme d'autres gagnent au loto. »</p>
+              <span class="st-member-city">Melbourne</span>
+            </div>
+            <div class="st-member-face st-member-back">
+              <p class="st-member-label">Fun fact</p>
+              <p class="st-member-fact">Arrivé en stage en 2022, il a divisé par deux le poids de nos scènes dès sa deuxième semaine.</p>
+              <ul class="st-skills" aria-label="Compétences">
+                <li>Profilage</li><li>Shaders</li><li>Compression</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Coulisses : bento                                                 -->
+    <!-- ================================================================ -->
+    <section class="st-section st-backstage" id="coulisses" aria-labelledby="st-backstage-title">
+      <header class="st-head">
+        <p class="st-kicker" data-reveal>04 — Dans les coulisses</p>
+        <h2 class="section-title" id="st-backstage-title" data-reveal>Les chiffres<br><span class="accent">qu'on assume</span></h2>
+      </header>
+
+      <div class="st-bento">
+        <article class="st-tile st-tile-xl" data-reveal>
+          <p class="st-tile-num"><span data-count="18432">18 432</span></p>
+          <h3>cafés bus depuis 2019</h3>
+          <p>Soit environ un café toutes les trois lignes de shader. On a fait le calcul, évidemment.</p>
+          <span class="st-tile-deco st-tile-cup" aria-hidden="true"></span>
+        </article>
+        <article class="st-tile" data-reveal style="--d: 0.08s">
+          <p class="st-tile-num"><span data-count="64210">64 210</span></p>
+          <h3>lignes de shader écrites</h3>
+        </article>
+        <article class="st-tile" data-reveal style="--d: 0.16s">
+          <p class="st-tile-num"><span data-count="212">212</span></p>
+          <h3>projets livrés</h3>
+        </article>
+        <article class="st-tile st-tile-tall st-tile-quote" data-reveal>
+          <p class="st-tile-label">Rituel</p>
+          <h3>Le vendredi démo</h3>
+          <p>Chaque vendredi, chacun montre un truc qui n'a servi à rien. Trois de nos produits sont nés comme ça, dont un globe en points qui vous dit peut-être quelque chose.</p>
+        </article>
+        <article class="st-tile" data-reveal style="--d: 0.08s">
+          <p class="st-tile-num"><span data-count="3.2" data-decimals="1">3,2</span><small>&nbsp;Mo</small></p>
+          <h3>poids moyen d'une scène</h3>
+        </article>
+        <article class="st-tile" data-reveal style="--d: 0.16s">
+          <p class="st-tile-num"><span data-count="1337">1 337</span></p>
+          <h3>bugs devenus des features</h3>
+        </article>
+        <article class="st-tile st-tile-wide st-tile-plant" data-reveal>
+          <p class="st-tile-label">Mascotte</p>
+          <h3>Vertex, la plante du studio</h3>
+          <p>Un pothos qui a survécu à quatre déménagements, deux canicules et une démo de particules un peu trop lumineuse.</p>
+          <span class="st-tile-deco st-tile-leaf" aria-hidden="true"></span>
+        </article>
+        <article class="st-tile" data-reveal style="--d: 0.08s">
+          <p class="st-tile-num"><span data-count="98">98</span><small>/100</small></p>
+          <h3>score de performance moyen</h3>
+        </article>
+        <article class="st-tile st-tile-accent" data-reveal style="--d: 0.16s">
+          <p class="st-tile-num"><span data-count="0">0</span></p>
+          <h3>ligne de Java</h3>
+          <p>Promis, juré.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Outils                                                            -->
+    <!-- ================================================================ -->
+    <section class="st-tools" id="outils" aria-labelledby="st-tools-title">
+      <header class="st-head st-section-inner">
+        <p class="st-kicker" data-reveal>05 — Nos outils</p>
+        <h2 class="section-title" id="st-tools-title" data-reveal>La boîte<br><span class="accent">à outils</span></h2>
+      </header>
+
+      <ul class="st-tools-list" aria-label="Outils et technologies utilisés au studio">
+        <li>Three.js</li><li>GSAP</li><li>WebGL</li><li>WebGPU</li><li>GLSL</li><li>WGSL</li>
+        <li>Blender</li><li>Houdini</li><li>Figma</li><li>TypeScript</li><li>Vite</li><li>Web Audio</li>
+        <li>Rust</li><li>WebAssembly</li><li>glTF</li><li>Draco</li><li>KTX2</li><li>Node.js</li>
+      </ul>
+
+      <div class="st-marquee" aria-hidden="true">
+        <div class="st-marquee-row" data-dir="left"></div>
+        <div class="st-marquee-row st-marquee-outline" data-dir="right"></div>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- On recrute                                                        -->
+    <!-- ================================================================ -->
+    <section class="st-section st-jobs" id="recrutement" aria-labelledby="st-jobs-title">
+      <header class="st-head st-head-split">
+        <div>
+          <p class="st-kicker" data-reveal>06 — On recrute</p>
+          <h2 class="section-title" id="st-jobs-title" data-reveal>Rejoignez<br><span class="accent">l'orbite</span></h2>
+        </div>
+        <p class="st-lead" data-reveal>Semaine de quatre jours, matériel au choix, budget formation annuel et un vendredi sur deux consacré au Labo. Le reste, on en parle autour d'un café (le 18&nbsp;433<sup>e</sup>).</p>
+      </header>
+
+      <div class="st-jobs-list">
+        <details class="st-job" name="st-jobs" data-reveal>
+          <summary>
+            <span class="st-job-title">Développeur·se créatif·ve WebGL</span>
+            <span class="st-job-tags"><span>CDI</span><span>Paris ou télétravail</span></span>
+            <span class="st-job-toggle" aria-hidden="true"></span>
+          </summary>
+          <div class="st-job-body">
+            <p>Vous transformerez des maquettes ambitieuses en scènes temps réel fluides, du premier prototype à la mise en ligne.</p>
+            <div class="st-job-cols">
+              <div>
+                <h4>Vos missions</h4>
+                <ul>
+                  <li>Développer des expériences 3D avec Three.js et des shaders maison</li>
+                  <li>Orchestrer les animations et le scroll avec GSAP</li>
+                  <li>Garder un œil sur la performance mobile, toujours</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Votre profil</h4>
+                <ul>
+                  <li>3 ans d'expérience en JavaScript, dont 1 en WebGL</li>
+                  <li>Une sensibilité au mouvement et au détail</li>
+                  <li>Un projet perso dont vous êtes fier·e (même inachevé)</li>
+                </ul>
+              </div>
+            </div>
+            <a href="contact.html" class="btn" data-magnetic><span>Postuler</span></a>
+          </div>
+        </details>
+
+        <details class="st-job" name="st-jobs" data-reveal style="--d: 0.1s">
+          <summary>
+            <span class="st-job-title">Technical Artist 3D temps réel</span>
+            <span class="st-job-tags"><span>CDI</span><span>Montréal · hybride</span></span>
+            <span class="st-job-toggle" aria-hidden="true"></span>
+          </summary>
+          <div class="st-job-body">
+            <p>Vous ferez le pont entre nos artistes et nos développeurs pour que chaque scène soit aussi belle que légère.</p>
+            <div class="st-job-cols">
+              <div>
+                <h4>Vos missions</h4>
+                <ul>
+                  <li>Modéliser, déplier et cuire des assets optimisés pour le web</li>
+                  <li>Construire nos pipelines d'export glTF et de compression</li>
+                  <li>Écrire des shaders de matériaux avec l'équipe dev</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Votre profil</h4>
+                <ul>
+                  <li>Maîtrise de Blender ou Houdini</li>
+                  <li>Bonnes notions de rendu temps réel</li>
+                  <li>Le goût des budgets serrés en polygones</li>
+                </ul>
+              </div>
+            </div>
+            <a href="contact.html" class="btn" data-magnetic><span>Postuler</span></a>
+          </div>
+        </details>
+
+        <details class="st-job" name="st-jobs" data-reveal style="--d: 0.2s">
+          <summary>
+            <span class="st-job-title">Stage — Motion designer UI</span>
+            <span class="st-job-tags"><span>6 mois</span><span>Paris</span></span>
+            <span class="st-job-toggle" aria-hidden="true"></span>
+          </summary>
+          <div class="st-job-body">
+            <p>Vous imaginerez les micro-interactions et transitions qui donnent vie à nos interfaces, aux côtés de Lucía.</p>
+            <div class="st-job-cols">
+              <div>
+                <h4>Vos missions</h4>
+                <ul>
+                  <li>Concevoir des prototypes animés dans Figma</li>
+                  <li>Définir des courbes d'easing et des chorégraphies d'interface</li>
+                  <li>Participer aux vendredis du Labo</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Votre profil</h4>
+                <ul>
+                  <li>École de design ou parcours autodidacte</li>
+                  <li>Un portfolio qui bouge</li>
+                  <li>Curiosité pour le code (pas obligatoire, mais contagieuse)</li>
+                </ul>
+              </div>
+            </div>
+            <a href="contact.html" class="btn" data-magnetic><span>Postuler</span></a>
+          </div>
+        </details>
+      </div>
+
+      <p class="st-jobs-note" data-reveal>Aucune offre ne vous correspond&nbsp;? <a href="contact.html">Écrivez-nous quand même</a>, on lit tout.</p>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- CTA final                                                         -->
+    <!-- ================================================================ -->
+    <section class="st-cta" aria-labelledby="st-cta-title">
+      <div class="st-cta-orb" data-speed="0.2" aria-hidden="true"></div>
+      <p class="st-kicker" data-reveal>Prochaine étape</p>
+      <h2 class="st-cta-title" id="st-cta-title" data-reveal>Et si on construisait<br><span class="accent">votre monde&nbsp;?</span></h2>
+      <div class="st-cta-actions" data-reveal>
+        <a href="contact.html" class="btn btn-big" data-magnetic><span>Démarrer un projet</span></a>
+        <a href="projets.html" class="st-link">Voir nos projets <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">ORBITALE<span>.</span></a>
+        <p>Studio d'expériences 3D interactives. On transforme les idées en mondes qu'on peut toucher.</p>
+      </div>
+      <div>
+        <h4>Explorer</h4>
+        <nav class="footer-links" aria-label="Pages">
+          <a href="index.html">Accueil</a>
+          <a href="projets.html">Projets</a>
+          <a href="labo.html">Labo</a>
+          <a href="studio.html">Studio</a>
+        </nav>
+      </div>
+      <div>
+        <h4>Plus</h4>
+        <nav class="footer-links" aria-label="Autres pages">
+          <a href="jeu.html">Jeu</a>
+          <a href="contact.html">Contact</a>
+          <a href="mentions.html">Mentions légales</a>
+        </nav>
+      </div>
+      <button class="footer-top" type="button" data-back-to-top aria-label="Retour en haut">↑</button>
+    </div>
+    <p class="footer-copy">© 2026 ORBITALE — fait avec Three.js &amp; GSAP. Zéro ligne de Java.</p>
+  </footer>
+</body>
+</html>

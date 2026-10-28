@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page introuvable — ORBITALE</title>
+  <meta name="description" content="Cette page a dérivé hors de notre orbite. Retrouvez votre chemin vers l'accueil, les projets ou le labo d'ORBITALE.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="js/pages.js"></script>
+</head>
+<body data-page="404">
+  <div class="curtain is-covering" aria-hidden="true"></div>
+  <div class="pg-bg" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <header class="nav">
+    <a href="index.html" class="nav-logo">ORBITALE<span>.</span></a>
+    <nav class="nav-links" id="nav-links" aria-label="Navigation principale">
+      <a href="index.html" data-magnetic>Accueil</a>
+      <a href="projets.html" data-magnetic>Projets</a>
+      <a href="labo.html" data-magnetic>Labo</a>
+      <a href="studio.html" data-magnetic>Studio</a>
+      <a href="jeu.html" data-magnetic>Jeu</a>
+      <a href="contact.html" data-magnetic>Contact</a>
+    </nav>
+    <button class="nav-burger" id="nav-burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
+  </header>
+
+  <main>
+    <!-- ================================================================ -->
+    <!-- Hero : "404" en particules + astronaute                           -->
+    <!-- ================================================================ -->
+    <section class="pg-lost" id="pg-lost" aria-labelledby="pg-lost-title">
+      <canvas class="pg-lost-canvas" id="lost-canvas" aria-hidden="true"></canvas>
+      <p class="pg-lost-fallback" aria-hidden="true">404</p>
+
+      <div class="pg-lost-content">
+        <p class="pg-kicker"><span class="pg-blink" aria-hidden="true"></span> Erreur 404 — signal perdu</p>
+        <h1 class="pg-lost-title" id="pg-lost-title">Perdu dans <span class="accent">l'espace</span></h1>
+        <p class="pg-lost-text">La page que vous cherchez a dérivé hors de notre orbite&nbsp;: lien cassé, adresse mal saisie ou page déplacée. Pas de panique, on vous ramène à bon port.</p>
+        <div class="pg-lost-actions">
+          <a href="index.html" class="btn btn-big" data-magnetic><span>Retour à l'accueil</span></a>
+          <a href="projets.html" class="pg-ghost">Voir les projets</a>
+        </div>
+        <p class="pg-tip" id="pg-tip">Survolez le 404 pour le disperser, cliquez pour le faire exploser.</p>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Itinéraires de secours                                            -->
+    <!-- ================================================================ -->
+    <section class="pg-routes" aria-labelledby="pg-routes-title">
+      <div class="pg-container">
+        <p class="pg-eyebrow" data-reveal>Itinéraires de secours</p>
+        <h2 class="section-title" id="pg-routes-title" data-reveal>Où voulez-vous <span class="accent">atterrir&nbsp;?</span></h2>
+        <ul class="pg-route-list">
+          <li data-reveal>
+            <a href="index.html" class="pg-route">
+              <span class="pg-route-num">01</span>
+              <span class="pg-route-name">Accueil</span>
+              <span class="pg-route-desc">Le voyage complet, du big bang au dernier pixel.</span>
+              <span class="pg-route-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a href="projets.html" class="pg-route">
+              <span class="pg-route-num">02</span>
+              <span class="pg-route-name">Projets</span>
+              <span class="pg-route-desc">Sites immersifs, configurateurs et installations.</span>
+              <span class="pg-route-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a href="labo.html" class="pg-route">
+              <span class="pg-route-num">03</span>
+              <span class="pg-route-name">Labo</span>
+              <span class="pg-route-desc">Nos expériences WebGL, à manipuler sans modération.</span>
+              <span class="pg-route-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+          <li data-reveal>
+            <a href="contact.html" class="pg-route">
+              <span class="pg-route-num">04</span>
+              <span class="pg-route-name">Contact</span>
+              <span class="pg-route-desc">Un lien cassé&nbsp;? Dites-le-nous, on répare vite.</span>
+              <span class="pg-route-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Mini-jeu                                                          -->
+    <!-- ================================================================ -->
+    <section class="pg-game" id="pg-game" aria-labelledby="pg-game-title">
+      <div class="pg-container">
+        <div class="pg-game-head">
+          <div>
+            <p class="pg-eyebrow" data-reveal>En attendant la dépanneuse</p>
+            <h2 class="section-title" id="pg-game-title" data-reveal>Pluie <span class="accent">d'étoiles</span></h2>
+          </div>
+          <p class="pg-game-rules" data-reveal>Attrapez un maximum d'étoiles en 20&nbsp;secondes. Les étoiles roses valent 3&nbsp;points. Chaque étoile est un bouton&nbsp;: la souris, le doigt ou le clavier (Tab puis Entrée) fonctionnent.</p>
+        </div>
+
+        <div class="pg-game-box" data-reveal>
+          <div class="pg-hud">
+            <p><span class="pg-hud-label">Score</span><span class="pg-hud-value" id="pg-score">0</span></p>
+            <p><span class="pg-hud-label">Temps</span><span class="pg-hud-value" id="pg-time">20</span></p>
+            <p><span class="pg-hud-label">Record</span><span class="pg-hud-value" id="pg-best">0</span></p>
+            <label class="pg-calm">
+              <input type="checkbox" id="pg-calm">
+              <span class="pg-switch" aria-hidden="true"></span>
+              <span>Mode calme <span class="pg-calm-hint">(étoiles plus lentes)</span></span>
+            </label>
+          </div>
+
+          <div class="pg-sky" id="pg-sky" role="group" aria-label="Ciel du mini-jeu">
+            <div class="pg-sky-overlay" id="pg-sky-overlay">
+              <p class="pg-sky-msg" id="pg-sky-msg">Prêt à décoller&nbsp;?</p>
+              <button type="button" class="btn" id="pg-start"><span>Lancer la partie</span></button>
+            </div>
+          </div>
+          <p class="pg-sr" id="pg-game-live" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">ORBITALE<span>.</span></a>
+        <p>Studio d'expériences 3D interactives. On transforme les idées en mondes qu'on peut toucher.</p>
+      </div>
+      <div>
+        <h4>Explorer</h4>
+        <nav class="footer-links" aria-label="Pages">
+          <a href="index.html">Accueil</a>
+          <a href="projets.html">Projets</a>
+          <a href="labo.html">Labo</a>
+          <a href="studio.html">Studio</a>
+        </nav>
+      </div>
+      <div>
+        <h4>Plus</h4>
+        <nav class="footer-links" aria-label="Autres pages">
+          <a href="jeu.html">Jeu</a>
+          <a href="contact.html">Contact</a>
+          <a href="mentions.html">Mentions légales</a>
+        </nav>
+      </div>
+      <button class="footer-top" type="button" data-back-to-top aria-label="Retour en haut">↑</button>
+    </div>
+    <p class="footer-copy">© 2026 ORBITALE — fait avec Three.js &amp; GSAP. Zéro ligne de Java.</p>
+  </footer>
+</body>
+</html>

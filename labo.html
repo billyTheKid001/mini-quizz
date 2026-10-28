@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Labo — ORBITALE</title>
+  <meta name="description" content="Le Labo d'ORBITALE : un bac à sable 3D en temps réel. Changez la forme, la matière, les couleurs et les particules d'un objet vivant, puis partagez votre création d'un simple lien.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/labo.css">
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="js/labo.js"></script>
+</head>
+<body>
+  <div class="curtain is-covering" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a href="index.html" class="nav-logo">ORBITALE<span>.</span></a>
+    <nav class="nav-links" id="nav-links" aria-label="Navigation principale">
+      <a href="index.html" data-magnetic>Accueil</a>
+      <a href="projets.html" data-magnetic>Projets</a>
+      <a href="labo.html" data-magnetic>Labo</a>
+      <a href="studio.html" data-magnetic>Studio</a>
+      <a href="jeu.html" data-magnetic>Jeu</a>
+      <a href="contact.html" data-magnetic>Contact</a>
+    </nav>
+    <button class="nav-burger" id="nav-burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
+  </header>
+
+  <main class="lab">
+    <!-- ================================================================ -->
+    <!-- Intro                                                             -->
+    <!-- ================================================================ -->
+    <section class="lab-intro" aria-labelledby="lab-title">
+      <div class="lab-intro-glow" aria-hidden="true"></div>
+      <p class="lab-kicker" data-lab-reveal>Expérience 04 — Bac à sable</p>
+      <h1 class="lab-title" id="lab-title">
+        <span class="lab-title-line" data-lab-line>Le</span>
+        <span class="lab-title-line accent" data-lab-line>Labo</span>
+      </h1>
+      <p class="lab-lede" data-lab-reveal>
+        Un objet vivant, six matières, des milliers de particules&nbsp;: tournez autour, déformez-le,
+        faites-le exploser, puis partagez votre création d'un simple lien.
+      </p>
+      <ul class="lab-pills" data-lab-reveal aria-label="En bref">
+        <li><strong>7</strong> formes</li>
+        <li><strong>6</strong> matériaux</li>
+        <li><strong>1</strong> lien à partager</li>
+      </ul>
+      <a href="#lab-stage" class="lab-intro-cta" data-lab-reveal>
+        <span>Ouvrir le labo</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 4v15m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Scène + panneau de contrôle                                       -->
+    <!-- ================================================================ -->
+    <section class="lab-stage-wrap" aria-label="Scène 3D interactive">
+      <div class="lab-stage" id="lab-stage" tabindex="-1">
+        <canvas class="lab-canvas" id="lab-canvas" role="img"
+          aria-label="Objet 3D interactif. Glisser pour tourner autour, cliquer sur l'objet pour créer une onde de choc."></canvas>
+
+        <div class="lab-hud" aria-hidden="true">
+          <p class="lab-hud-name" id="lab-hud-name">Nœud · Holographique</p>
+          <p class="lab-hud-hint" id="lab-hud-hint">Glisser&nbsp;: orbite · Clic sur l'objet&nbsp;: onde de choc · Molette (après un clic)&nbsp;: zoom</p>
+          <p class="lab-hud-badges">
+            <span class="lab-badge lab-badge-pause" id="lab-pause-badge" hidden>Pause</span>
+            <span class="lab-badge lab-badge-fps" id="lab-fps" hidden>-- i/s</span>
+          </p>
+        </div>
+
+        <div class="lab-fallback" id="lab-fallback" hidden>
+          <p class="lab-fallback-title">WebGL est indisponible</p>
+          <p>Votre navigateur ou votre appareil ne permet pas d'afficher la scène 3D. Le reste de la page reste consultable.</p>
+        </div>
+
+        <aside class="lab-panel" id="lab-panel" aria-label="Panneau de réglages">
+          <div class="lab-panel-head">
+            <button class="lab-panel-toggle" id="lab-panel-toggle" type="button" aria-expanded="true" aria-controls="lab-panel-body">
+              <span class="lab-panel-grip" aria-hidden="true"></span>
+              <span class="lab-panel-label">Réglages</span>
+              <svg class="lab-panel-chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m6 15 6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="lab-quick">
+              <button class="lab-icon-btn" type="button" data-action="random" aria-label="Combinaison aléatoire" title="Aléatoire (R)">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="8.5" cy="8.5" r="1.4" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg>
+              </button>
+              <button class="lab-icon-btn" type="button" data-action="explode" aria-label="Explosion" title="Explosion (E)">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2v5M12 17v5M2 12h5M17 12h5M4.9 4.9l3.5 3.5M15.6 15.6l3.5 3.5M4.9 19.1l3.5-3.5M15.6 8.4l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="lab-panel-body" id="lab-panel-body">
+            <form class="lab-form" id="lab-form" novalidate>
+              <fieldset class="lab-ctl">
+                <legend class="lab-legend">Forme</legend>
+                <div class="lab-chips">
+                  <label class="lab-chip"><input type="radio" name="shape" value="sphere"><span>Sphère</span></label>
+                  <label class="lab-chip"><input type="radio" name="shape" value="torus"><span>Tore</span></label>
+                  <label class="lab-chip"><input type="radio" name="shape" value="knot" checked><span>Nœud</span></label>
+                  <label class="lab-chip"><input type="radio" name="shape" value="cube"><span>Cube arrondi</span></label>
+                  <label class="lab-chip"><input type="radio" name="shape" value="ico"><span>Icosaèdre</span></label>
+                  <label class="lab-chip"><input type="radio" name="shape" value="crystal"><span>Cristal</span></label>
+                  <label class="lab-chip"><input type="radio" name="shape" value="ribbon"><span>Ruban</span></label>
+                </div>
+              </fieldset>
+
+              <fieldset class="lab-ctl">
+                <legend class="lab-legend">Matériau</legend>
+                <div class="lab-chips">
+                  <label class="lab-chip"><input type="radio" name="material" value="holo" checked><span>Holographique</span></label>
+                  <label class="lab-chip"><input type="radio" name="material" value="chrome"><span>Chrome</span></label>
+                  <label class="lab-chip"><input type="radio" name="material" value="glass"><span>Verre</span></label>
+                  <label class="lab-chip"><input type="radio" name="material" value="wire"><span>Fil de fer</span></label>
+                  <label class="lab-chip"><input type="radio" name="material" value="points"><span>Points</span></label>
+                  <label class="lab-chip"><input type="radio" name="material" value="toon"><span>Toon</span></label>
+                </div>
+              </fieldset>
+
+              <fieldset class="lab-ctl">
+                <legend class="lab-legend">Couleurs</legend>
+                <div class="lab-swatches">
+                  <label class="lab-swatch" for="lab-c1">
+                    <input type="color" id="lab-c1" name="c1" value="#7c5cff">
+                    <span class="lab-swatch-text">Principale <output class="lab-out" id="lab-c1-out" for="lab-c1">#7c5cff</output></span>
+                  </label>
+                  <label class="lab-swatch" for="lab-c2">
+                    <input type="color" id="lab-c2" name="c2" value="#00e5ff">
+                    <span class="lab-swatch-text">Secondaire <output class="lab-out" id="lab-c2-out" for="lab-c2">#00e5ff</output></span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <fieldset class="lab-ctl">
+                <legend class="lab-legend">Mouvement</legend>
+                <div class="lab-range">
+                  <label for="lab-noise">Déformation</label>
+                  <output class="lab-out" id="lab-noise-out" for="lab-noise">35 %</output>
+                  <input type="range" id="lab-noise" name="noise" min="0" max="100" step="1" value="35">
+                </div>
+                <div class="lab-range">
+                  <label for="lab-speed">Vitesse de rotation</label>
+                  <output class="lab-out" id="lab-speed-out" for="lab-speed">40 %</output>
+                  <input type="range" id="lab-speed" name="speed" min="0" max="100" step="1" value="40">
+                </div>
+              </fieldset>
+
+              <fieldset class="lab-ctl">
+                <legend class="lab-legend">Ambiance</legend>
+                <div class="lab-range">
+                  <label for="lab-particles">Particules d'ambiance</label>
+                  <output class="lab-out" id="lab-particles-out" for="lab-particles">1 200</output>
+                  <input type="range" id="lab-particles" name="particles" min="0" max="3000" step="50" value="1200">
+                </div>
+                <label class="lab-switch" for="lab-bloom">
+                  <input type="checkbox" role="switch" id="lab-bloom" name="bloom" checked>
+                  <span class="lab-switch-track" aria-hidden="true"></span>
+                  <span>Halo lumineux (bloom simulé)</span>
+                </label>
+                <div class="lab-sub">
+                  <span class="lab-sub-label" id="lab-bg-label">Fond</span>
+                  <div class="lab-chips lab-chips-compact" role="radiogroup" aria-labelledby="lab-bg-label">
+                    <label class="lab-chip"><input type="radio" name="bg" value="black"><span>Noir</span></label>
+                    <label class="lab-chip"><input type="radio" name="bg" value="gradient" checked><span>Dégradé</span></label>
+                    <label class="lab-chip"><input type="radio" name="bg" value="grid"><span>Grille</span></label>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="lab-ctl">
+                <legend class="lab-legend">Actions</legend>
+                <div class="lab-actions">
+                  <button class="lab-action" type="button" data-action="random">Aléatoire</button>
+                  <button class="lab-action" type="button" data-action="explode">Explosion</button>
+                  <button class="lab-action" type="button" data-action="reset">Réinitialiser</button>
+                  <button class="lab-action" type="button" data-action="capture">Capture</button>
+                  <button class="lab-action" type="button" data-action="fullscreen" aria-pressed="false">Plein écran</button>
+                  <button class="lab-action lab-action-accent" type="button" data-action="copy">Copier le lien</button>
+                </div>
+                <label class="lab-switch lab-switch-small" for="lab-fps-toggle">
+                  <input type="checkbox" role="switch" id="lab-fps-toggle" name="fps">
+                  <span class="lab-switch-track" aria-hidden="true"></span>
+                  <span>Afficher les images par seconde</span>
+                </label>
+              </fieldset>
+
+              <details class="lab-help">
+                <summary>Raccourcis clavier</summary>
+                <dl class="lab-keys">
+                  <div><dt><kbd>R</kbd></dt><dd>Combinaison aléatoire</dd></div>
+                  <div><dt><kbd>E</kbd></dt><dd>Explosion</dd></div>
+                  <div><dt><kbd>Espace</kbd></dt><dd>Pause / reprise</dd></div>
+                  <div><dt><kbd>F</kbd></dt><dd>Plein écran</dd></div>
+                </dl>
+                <p class="lab-help-note">Actifs quand la scène est à l'écran et qu'aucun champ texte n'a le focus.</p>
+              </details>
+            </form>
+          </div>
+        </aside>
+
+        <p class="lab-toast" id="lab-toast" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Recettes (préréglages)                                            -->
+    <!-- ================================================================ -->
+    <section class="lab-section lab-presets" id="recettes" aria-labelledby="recettes-title">
+      <header class="lab-section-head">
+        <p class="lab-kicker" data-lab-reveal>02 — Recettes</p>
+        <h2 class="section-title" id="recettes-title" data-lab-reveal>Six recettes <span class="accent">pour démarrer</span></h2>
+        <p class="lab-section-lede" data-lab-reveal>
+          Pas d'inspiration&nbsp;? Chaque carte applique une combinaison complète — forme, matière, couleurs,
+          particules et fond. Partez de là, puis cassez tout.
+        </p>
+      </header>
+
+      <div class="lab-preset-grid">
+        <button class="lab-preset" type="button" data-preset="neon" style="--c1:#ff3d81;--c2:#00e5ff" data-lab-reveal>
+          <span class="lab-preset-orb lab-preset-orb-wire" aria-hidden="true"></span>
+          <span class="lab-preset-num" aria-hidden="true">01</span>
+          <span class="lab-preset-name">Néon</span>
+          <span class="lab-preset-desc">Un nœud en fil de fer qui grésille au-dessus d'une grille infinie, façon borne d'arcade oubliée.</span>
+          <span class="lab-preset-meta">Nœud · Fil de fer · Grille</span>
+        </button>
+        <button class="lab-preset" type="button" data-preset="lave" style="--c1:#ff4a1c;--c2:#ffc93c" data-lab-reveal>
+          <span class="lab-preset-orb lab-preset-orb-toon" aria-hidden="true"></span>
+          <span class="lab-preset-num" aria-hidden="true">02</span>
+          <span class="lab-preset-name">Lave</span>
+          <span class="lab-preset-desc">Une sphère en ébullition rendue en aplats&nbsp;: la matière bouillonne au moindre souffle.</span>
+          <span class="lab-preset-meta">Sphère · Toon · Dégradé</span>
+        </button>
+        <button class="lab-preset" type="button" data-preset="glacier" style="--c1:#9fe8ff;--c2:#5b7cff" data-lab-reveal>
+          <span class="lab-preset-orb lab-preset-orb-glass" aria-hidden="true"></span>
+          <span class="lab-preset-num" aria-hidden="true">03</span>
+          <span class="lab-preset-name">Glacier</span>
+          <span class="lab-preset-desc">Un cristal de verre taillé, presque immobile, qui réfracte un ciel polaire.</span>
+          <span class="lab-preset-meta">Cristal · Verre · Grille</span>
+        </button>
+        <button class="lab-preset" type="button" data-preset="nebuleuse" style="--c1:#7c5cff;--c2:#ff3d81" data-lab-reveal>
+          <span class="lab-preset-orb lab-preset-orb-points" aria-hidden="true"></span>
+          <span class="lab-preset-num" aria-hidden="true">04</span>
+          <span class="lab-preset-name">Nébuleuse</span>
+          <span class="lab-preset-desc">Des milliers de grains de lumière qui dessinent un tore, perdus dans un essaim d'étoiles.</span>
+          <span class="lab-preset-meta">Tore · Points · Noir</span>
+        </button>
+        <button class="lab-preset" type="button" data-preset="or" style="--c1:#ffcc66;--c2:#ff8a3d" data-lab-reveal>
+          <span class="lab-preset-orb lab-preset-orb-chrome" aria-hidden="true"></span>
+          <span class="lab-preset-num" aria-hidden="true">05</span>
+          <span class="lab-preset-name">Or</span>
+          <span class="lab-preset-desc">Un cube arrondi en métal poli, reflets chauds et rotation lente de vitrine.</span>
+          <span class="lab-preset-meta">Cube arrondi · Chrome · Dégradé</span>
+        </button>
+        <button class="lab-preset" type="button" data-preset="minimal" style="--c1:#f2f0ff;--c2:#7c5cff" data-lab-reveal>
+          <span class="lab-preset-orb lab-preset-orb-toon" aria-hidden="true"></span>
+          <span class="lab-preset-num" aria-hidden="true">06</span>
+          <span class="lab-preset-name">Minimal</span>
+          <span class="lab-preset-desc">Un icosaèdre blanc sur fond noir. Rien à ajouter, tout à regarder.</span>
+          <span class="lab-preset-meta">Icosaèdre · Toon · Noir</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Comment ça marche                                                 -->
+    <!-- ================================================================ -->
+    <section class="lab-section lab-how" id="comment" aria-labelledby="comment-title">
+      <header class="lab-section-head">
+        <p class="lab-kicker" data-lab-reveal>03 — Sous le capot</p>
+        <h2 class="section-title" id="comment-title" data-lab-reveal>Comment <span class="accent">ça marche</span></h2>
+        <p class="lab-section-lede" data-lab-reveal>
+          Tout ce que vous voyez est calculé en direct par la carte graphique, soixante fois par seconde.
+          Quatre idées suffisent à comprendre la recette.
+        </p>
+      </header>
+
+      <div class="lab-how-grid">
+        <!-- Bloc 1 : shaders -->
+        <article class="lab-how-card" data-lab-reveal>
+          <figure class="lab-figure">
+            <svg viewBox="0 0 320 150" role="img" aria-labelledby="svg-shader-t">
+              <title id="svg-shader-t">Le pipeline graphique : sommets, vertex shader, rastérisation, fragment shader, pixels</title>
+              <defs>
+                <linearGradient id="lab-g1" x1="0" x2="1">
+                  <stop offset="0" stop-color="#7c5cff"/><stop offset="0.5" stop-color="#00e5ff"/><stop offset="1" stop-color="#ff3d81"/>
+                </linearGradient>
+                <marker id="lab-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M0 0 10 5 0 10z" fill="#00e5ff"/>
+                </marker>
+              </defs>
+              <!-- Sommets -->
+              <g fill="#7c5cff">
+                <circle cx="22" cy="48" r="4"/><circle cx="44" cy="30" r="4"/><circle cx="40" cy="66" r="4"/>
+              </g>
+              <path d="M22 48 44 30 40 66z" fill="none" stroke="#7c5cff" stroke-width="1.2" stroke-dasharray="3 3"/>
+              <text x="32" y="96" text-anchor="middle" class="lab-svg-label">Sommets</text>
+              <!-- Vertex -->
+              <rect x="70" y="26" width="72" height="46" rx="10" fill="rgba(124,92,255,0.14)" stroke="url(#lab-g1)"/>
+              <text x="106" y="47" text-anchor="middle" class="lab-svg-strong">VERTEX</text>
+              <text x="106" y="61" text-anchor="middle" class="lab-svg-small">déplace</text>
+              <!-- Raster -->
+              <g fill="rgba(0,229,255,0.55)">
+                <rect x="160" y="34" width="8" height="8"/><rect x="170" y="34" width="8" height="8"/>
+                <rect x="160" y="44" width="8" height="8"/><rect x="170" y="44" width="8" height="8"/><rect x="180" y="44" width="8" height="8"/>
+                <rect x="160" y="54" width="8" height="8"/><rect x="170" y="54" width="8" height="8"/><rect x="180" y="54" width="8" height="8"/><rect x="190" y="54" width="8" height="8"/>
+              </g>
+              <!-- Fragment -->
+              <rect x="214" y="26" width="72" height="46" rx="10" fill="rgba(255,61,129,0.14)" stroke="url(#lab-g1)"/>
+              <text x="250" y="47" text-anchor="middle" class="lab-svg-strong">FRAGMENT</text>
+              <text x="250" y="61" text-anchor="middle" class="lab-svg-small">colore</text>
+              <!-- Flèches -->
+              <path d="M52 49h14" stroke="#00e5ff" stroke-width="1.5" marker-end="url(#lab-arrow)"/>
+              <path d="M144 49h12" stroke="#00e5ff" stroke-width="1.5" marker-end="url(#lab-arrow)"/>
+              <path d="M200 49h10" stroke="#00e5ff" stroke-width="1.5" marker-end="url(#lab-arrow)"/>
+              <path d="M288 49h14" stroke="#00e5ff" stroke-width="1.5" marker-end="url(#lab-arrow)"/>
+              <rect x="300" y="38" width="16" height="22" rx="3" fill="url(#lab-g1)"/>
+              <text x="180" y="96" text-anchor="middle" class="lab-svg-label">Pixels</text>
+              <text x="160" y="132" text-anchor="middle" class="lab-svg-small">× 75 000 sommets, × 2 millions de pixels, 60 fois par seconde</text>
+            </svg>
+          </figure>
+          <p class="lab-how-step">01</p>
+          <h3>Les shaders, petits programmes de la carte graphique</h3>
+          <p>
+            Un objet 3D n'est qu'une liste de points reliés en triangles. Le <em>vertex shader</em> reçoit chaque
+            point et décide où il apparaît à l'écran — c'est là que nous déformons la forme. Le <em>fragment shader</em>
+            reçoit ensuite chaque pixel couvert et choisit sa couleur. Les deux tournent en parallèle sur des
+            milliers de cœurs.
+          </p>
+          <pre class="lab-code"><code>gl_Position = projection * vue * modele * vec4(p, 1.0);</code></pre>
+        </article>
+
+        <!-- Bloc 2 : bruit -->
+        <article class="lab-how-card" data-lab-reveal>
+          <figure class="lab-figure">
+            <svg viewBox="0 0 320 150" role="img" aria-labelledby="svg-noise-t">
+              <title id="svg-noise-t">Comparaison entre un hasard pur, en dents de scie, et un bruit cohérent, en courbe douce</title>
+              <line x1="16" y1="46" x2="304" y2="46" stroke="rgba(255,255,255,0.08)"/>
+              <line x1="16" y1="112" x2="304" y2="112" stroke="rgba(255,255,255,0.08)"/>
+              <polyline fill="none" stroke="#ff3d81" stroke-width="1.6" stroke-linejoin="round"
+                points="16,40 28,58 40,30 52,52 64,24 76,60 88,36 100,50 112,22 124,62 136,34 148,56 160,28 172,48 184,64 196,26 208,54 220,38 232,60 244,30 256,50 268,22 280,58 292,40 304,52"/>
+              <text x="16" y="16" class="lab-svg-small">Hasard pur</text>
+              <path fill="none" stroke="url(#lab-g1)" stroke-width="2.4" stroke-linecap="round"
+                d="M16 112 C40 84 60 86 80 104 S120 140 148 118 S190 76 216 96 S262 132 304 102"/>
+              <text x="16" y="82" class="lab-svg-small">Bruit simplex</text>
+              <g fill="#00e5ff">
+                <circle cx="80" cy="104" r="3"/><circle cx="148" cy="118" r="3"/><circle cx="216" cy="96" r="3"/>
+              </g>
+              <text x="160" y="142" text-anchor="middle" class="lab-svg-small">Deux voisins ont des valeurs proches : la surface ondule sans se déchirer</text>
+            </svg>
+          </figure>
+          <p class="lab-how-step">02</p>
+          <h3>Le bruit&nbsp;: du hasard qui a de la tenue</h3>
+          <p>
+            Un tirage aléatoire par sommet donnerait une surface hérissée. Le <em>bruit simplex</em> produit au contraire
+            des valeurs qui varient en douceur dans l'espace. On en superpose deux octaves, on les fait glisser dans le
+            temps, et chaque sommet est poussé le long de sa normale. Le curseur «&nbsp;Déformation&nbsp;» règle simplement
+            l'amplitude.
+          </p>
+          <pre class="lab-code"><code>p += normale * bruit(p * 1.4 + temps) * intensite;</code></pre>
+        </article>
+
+        <!-- Bloc 3 : particules -->
+        <article class="lab-how-card" data-lab-reveal>
+          <figure class="lab-figure">
+            <svg viewBox="0 0 320 150" role="img" aria-labelledby="svg-part-t">
+              <title id="svg-part-t">Des particules réparties à la surface d'une forme, puis projetées vers l'extérieur lors de l'explosion</title>
+              <circle cx="86" cy="70" r="44" fill="none" stroke="rgba(255,255,255,0.1)" stroke-dasharray="2 4"/>
+              <g fill="#7c5cff">
+                <circle cx="86" cy="26" r="2.6"/><circle cx="117" cy="39" r="2.6"/><circle cx="130" cy="70" r="2.6"/>
+                <circle cx="117" cy="101" r="2.6"/><circle cx="86" cy="114" r="2.6"/><circle cx="55" cy="101" r="2.6"/>
+                <circle cx="42" cy="70" r="2.6"/><circle cx="55" cy="39" r="2.6"/>
+                <circle cx="102" cy="29" r="2"/><circle cx="126" cy="54" r="2"/><circle cx="126" cy="86" r="2"/>
+                <circle cx="102" cy="111" r="2"/><circle cx="70" cy="111" r="2"/><circle cx="46" cy="86" r="2"/>
+                <circle cx="46" cy="54" r="2"/><circle cx="70" cy="29" r="2"/>
+              </g>
+              <path d="M150 70h22" stroke="#00e5ff" stroke-width="1.5" marker-end="url(#lab-arrow)"/>
+              <g fill="#ff3d81">
+                <circle cx="236" cy="14" r="2.6"/><circle cx="286" cy="34" r="2.6"/><circle cx="306" cy="74" r="2.6"/>
+                <circle cx="284" cy="118" r="2.6"/><circle cx="238" cy="136" r="2.6"/><circle cx="196" cy="116" r="2.6"/>
+                <circle cx="186" cy="66" r="2.6"/><circle cx="200" cy="24" r="2.6"/>
+              </g>
+              <g stroke="rgba(255,61,129,0.45)" stroke-width="1">
+                <path d="M240 72 236 20"/><path d="M240 72 282 38"/><path d="M240 72 300 74"/><path d="M240 72 280 114"/>
+                <path d="M240 72 238 130"/><path d="M240 72 200 112"/><path d="M240 72 192 67"/><path d="M240 72 204 28"/>
+              </g>
+              <circle cx="240" cy="72" r="5" fill="#00e5ff"/>
+            </svg>
+          </figure>
+          <p class="lab-how-step">03</p>
+          <h3>Les particules&nbsp;: une forme faite de poussière</h3>
+          <p>
+            Pour le mode «&nbsp;Points&nbsp;», nous tirons au sort des milliers de positions sur la surface, en pondérant
+            chaque triangle par son aire pour éviter les grumeaux. Chaque grain reçoit une direction de fuite&nbsp;:
+            l'explosion n'est qu'un curseur de 0 à 1 qui les éloigne… puis les ramène. Le mélange additif fait le reste&nbsp;:
+            là où les grains se superposent, la lumière s'accumule.
+          </p>
+          <pre class="lab-code"><code>p = centre + direction * explosion * (1.0 + hasard * 2.6);</code></pre>
+        </article>
+
+        <!-- Bloc 4 : Fresnel & onde de choc -->
+        <article class="lab-how-card" data-lab-reveal>
+          <figure class="lab-figure">
+            <svg viewBox="0 0 320 150" role="img" aria-labelledby="svg-fres-t">
+              <title id="svg-fres-t">Effet Fresnel : les bords d'un objet, vus en angle rasant, brillent davantage que son centre</title>
+              <defs>
+                <radialGradient id="lab-rim" cx="0.5" cy="0.5" r="0.5">
+                  <stop offset="0.55" stop-color="#7c5cff" stop-opacity="0.08"/>
+                  <stop offset="0.85" stop-color="#00e5ff" stop-opacity="0.55"/>
+                  <stop offset="1" stop-color="#ff3d81" stop-opacity="0.95"/>
+                </radialGradient>
+              </defs>
+              <circle cx="96" cy="74" r="56" fill="url(#lab-rim)"/>
+              <circle cx="96" cy="74" r="56" fill="none" stroke="rgba(255,255,255,0.25)"/>
+              <path d="M96 74V30" stroke="#f2f0ff" stroke-width="1.4" marker-end="url(#lab-arrow)"/>
+              <path d="M96 74h40" stroke="#f2f0ff" stroke-width="1.4" marker-end="url(#lab-arrow)" opacity="0.5"/>
+              <text x="102" y="40" class="lab-svg-small">N</text>
+              <text x="12" y="20" class="lab-svg-small">centre : sombre</text>
+              <text x="132" y="20" class="lab-svg-small">bord : lumineux</text>
+              <!-- Onde de choc -->
+              <circle cx="246" cy="74" r="8" fill="#00e5ff"/>
+              <circle cx="246" cy="74" r="22" fill="none" stroke="#00e5ff" stroke-width="1.6" opacity="0.8"/>
+              <circle cx="246" cy="74" r="38" fill="none" stroke="#7c5cff" stroke-width="1.4" opacity="0.55"/>
+              <circle cx="246" cy="74" r="54" fill="none" stroke="#ff3d81" stroke-width="1.2" opacity="0.3"/>
+              <text x="246" y="144" text-anchor="middle" class="lab-svg-small">Impact : l'anneau se propage et s'amortit</text>
+            </svg>
+          </figure>
+          <p class="lab-how-step">04</p>
+          <h3>Fresnel et onde de choc</h3>
+          <p>
+            Le matériau holographique compare la direction du regard à celle de la surface&nbsp;: plus l'angle est rasant,
+            plus le bord s'illumine et change de teinte. Quand vous cliquez, un rayon part de la caméra
+            (<em>raycasting</em>) et trouve le point touché&nbsp;; le shader y fait naître un anneau qui grandit et s'éteint.
+            Quatre ondes peuvent cohabiter.
+          </p>
+          <pre class="lab-code"><code>float fresnel = pow(1.0 - dot(N, V), 2.5);</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Fiche technique                                                   -->
+    <!-- ================================================================ -->
+    <section class="lab-section lab-specs" aria-labelledby="specs-title">
+      <header class="lab-section-head">
+        <p class="lab-kicker" data-lab-reveal>04 — Fiche technique</p>
+        <h2 class="section-title" id="specs-title" data-lab-reveal>Fait <span class="accent">main</span></h2>
+      </header>
+      <dl class="lab-spec-grid">
+        <div class="lab-spec" data-lab-reveal>
+          <dt>≈ 75 000</dt>
+          <dd>sommets recalculés à chaque image, bruit et ondes compris.</dd>
+        </div>
+        <div class="lab-spec" data-lab-reveal>
+          <dt>4</dt>
+          <dd>ondes de choc simultanées, chacune avec son point d'impact.</dd>
+        </div>
+        <div class="lab-spec" data-lab-reveal>
+          <dt>0</dt>
+          <dd>extension&nbsp;: orbite, halo et échantillonnage de surface sont écrits à la main.</dd>
+        </div>
+        <div class="lab-spec" data-lab-reveal>
+          <dt>1</dt>
+          <dd>lien qui contient toute votre création, sans compte ni serveur.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Appel à l'action                                                  -->
+    <!-- ================================================================ -->
+    <section class="lab-cta" aria-labelledby="cta-title">
+      <h2 class="lab-cta-title" id="cta-title" data-lab-reveal>Vous avez fait <span class="accent">quelque chose de beau&nbsp;?</span></h2>
+      <p class="lab-section-lede" data-lab-reveal>Envoyez-nous le lien. Les plus belles créations finissent parfois en fond d'écran au studio.</p>
+      <div class="lab-cta-row" data-lab-reveal>
+        <button class="btn" type="button" data-action="copy" data-magnetic><span>Copier le lien de ma création</span></button>
+        <a class="btn" href="contact.html" data-magnetic><span>Nous écrire</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">ORBITALE<span>.</span></a>
+        <p>Studio d'expériences 3D interactives. On transforme les idées en mondes qu'on peut toucher.</p>
+      </div>
+      <div>
+        <h4>Explorer</h4>
+        <nav class="footer-links" aria-label="Pages">
+          <a href="index.html">Accueil</a>
+          <a href="projets.html">Projets</a>
+          <a href="labo.html">Labo</a>
+          <a href="studio.html">Studio</a>
+        </nav>
+      </div>
+      <div>
+        <h4>Plus</h4>
+        <nav class="footer-links" aria-label="Autres pages">
+          <a href="jeu.html">Jeu</a>
+          <a href="contact.html">Contact</a>
+          <a href="mentions.html">Mentions légales</a>
+        </nav>
+      </div>
+      <button class="footer-top" type="button" data-back-to-top aria-label="Retour en haut">↑</button>
+    </div>
+    <p class="footer-copy">© 2026 ORBITALE — fait avec Three.js &amp; GSAP. Zéro ligne de Java.</p>
+  </footer>
+</body>
+</html>

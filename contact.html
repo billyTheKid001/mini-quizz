@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — ORBITALE</title>
+  <meta name="description" content="Parlons de votre projet 3D : site immersif, configurateur, WebXR ou installation. Le formulaire prépare un e-mail que vous envoyez depuis votre messagerie.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/contact.css">
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="js/contact.js"></script>
+</head>
+<body data-page="contact">
+  <div class="curtain is-covering" aria-hidden="true"></div>
+
+  <!-- Vagues de points en WebGL, fixes derrière le contenu -->
+  <canvas class="ct-canvas" id="contact-canvas" aria-hidden="true"></canvas>
+
+  <header class="nav">
+    <a href="index.html" class="nav-logo">ORBITALE<span>.</span></a>
+    <nav class="nav-links" id="nav-links" aria-label="Navigation principale">
+      <a href="index.html" data-magnetic>Accueil</a>
+      <a href="projets.html" data-magnetic>Projets</a>
+      <a href="labo.html" data-magnetic>Labo</a>
+      <a href="studio.html" data-magnetic>Studio</a>
+      <a href="jeu.html" data-magnetic>Jeu</a>
+      <a href="contact.html" data-magnetic>Contact</a>
+    </nav>
+    <button class="nav-burger" id="nav-burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
+  </header>
+
+  <main>
+    <!-- ================================================================ -->
+    <!-- Hero                                                              -->
+    <!-- ================================================================ -->
+    <section class="ct-hero" aria-labelledby="ct-hero-title">
+      <p class="ct-kicker"><span class="ct-pulse" aria-hidden="true"></span> Disponibles pour de nouveaux projets — début 2027</p>
+      <h1 class="ct-hero-title" id="ct-hero-title">
+        <span class="ct-line"><span class="ct-word">Parlons</span> <span class="ct-word">de</span></span>
+        <span class="ct-line"><span class="ct-word accent">votre projet</span></span>
+      </h1>
+      <p class="ct-hero-sub">Une idée encore floue, un cahier des charges bouclé ou juste une intuition&nbsp;? Racontez-nous. On répond à chaque message, en personne, sous 48&nbsp;heures ouvrées.</p>
+      <div class="ct-hero-actions">
+        <a href="#ct-form-section" class="btn" data-magnetic><span>Écrire au studio</span></a>
+        <a href="#ct-infos" class="ct-link">Ou voir nos coordonnées</a>
+      </div>
+      <ul class="ct-hero-facts" aria-label="En bref">
+        <li><strong>3 min</strong><span>pour remplir le formulaire</span></li>
+        <li><strong>48 h</strong><span>délai de réponse moyen</span></li>
+        <li><strong>0</strong><span>donnée envoyée à un serveur</span></li>
+      </ul>
+      <div class="scroll-hint" aria-hidden="true"><span></span></div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Formulaire multi-étapes                                           -->
+    <!-- ================================================================ -->
+    <section class="ct-form-section" id="ct-form-section" aria-labelledby="ct-form-title">
+      <div class="ct-form-intro" data-reveal>
+        <p class="ct-eyebrow">Brief express</p>
+        <h2 class="section-title" id="ct-form-title">Trois étapes,<br><span class="accent">zéro friction</span></h2>
+        <p class="ct-lead">Ce formulaire ne contacte aucun serveur. Il assemble votre brief et <strong>prépare un e-mail</strong> que vous relisez puis envoyez vous-même depuis votre messagerie. Votre brouillon est gardé sur cet appareil uniquement.</p>
+        <ul class="ct-promises">
+          <li>Un interlocuteur unique, du premier appel à la mise en ligne.</li>
+          <li>Pas de commercial : vous parlez directement à l'équipe qui fabrique.</li>
+          <li>Une estimation honnête, même si la réponse est «&nbsp;pas maintenant&nbsp;».</li>
+        </ul>
+      </div>
+
+      <div class="ct-form-card" data-reveal>
+        <form class="ct-form" id="ct-form" novalidate aria-labelledby="ct-form-title">
+          <!-- Progression -->
+          <div class="ct-progress">
+            <ol class="ct-steps" aria-label="Étapes du formulaire">
+              <li><button type="button" class="ct-step-btn" data-goto="1" aria-current="step"><span class="ct-step-num">1</span><span class="ct-step-label">Le projet</span></button></li>
+              <li><button type="button" class="ct-step-btn" data-goto="2"><span class="ct-step-num">2</span><span class="ct-step-label">Vous</span></button></li>
+              <li><button type="button" class="ct-step-btn" data-goto="3"><span class="ct-step-num">3</span><span class="ct-step-label">Vérification</span></button></li>
+            </ol>
+            <div class="ct-bar" aria-hidden="true"><span class="ct-bar-fill" id="ct-bar-fill"></span></div>
+            <p class="ct-step-status" id="ct-step-status" aria-live="polite">Étape 1 sur 3 — Le projet</p>
+          </div>
+
+          <!-- Étape 1 -->
+          <div class="ct-panel" id="ct-step-1" data-step="1">
+            <h3 class="ct-panel-title" tabindex="-1">De quoi parle-t-on&nbsp;?</h3>
+
+            <fieldset class="ct-group" id="group-type" aria-describedby="err-type">
+              <legend>Type de projet <span class="ct-req" aria-hidden="true">*</span><span class="ct-sr"> (obligatoire)</span></legend>
+              <div class="ct-choices">
+                <label class="ct-choice">
+                  <input type="radio" name="type" value="Site immersif" required>
+                  <span class="ct-choice-box">
+                    <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="6" width="26" height="20" rx="3"/><path d="M3 11h26M7 8.5h.01M10 8.5h.01"/><path d="M11 21l4-5 3 3 3-4"/></svg>
+                    <span class="ct-choice-title">Site immersif</span>
+                    <span class="ct-choice-desc">Site vitrine ou lancement de produit en WebGL.</span>
+                  </span>
+                </label>
+                <label class="ct-choice">
+                  <input type="radio" name="type" value="Configurateur 3D">
+                  <span class="ct-choice-box">
+                    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l11 6v14l-11 6-11-6V9z"/><path d="M5 9l11 6 11-6M16 15v14"/></svg>
+                    <span class="ct-choice-title">Configurateur 3D</span>
+                    <span class="ct-choice-desc">Personnalisation produit en temps réel.</span>
+                  </span>
+                </label>
+                <label class="ct-choice">
+                  <input type="radio" name="type" value="Expérience WebXR">
+                  <span class="ct-choice-box">
+                    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 12a3 3 0 013-3h18a3 3 0 013 3v7a3 3 0 01-3 3h-5l-2-3h-4l-2 3H7a3 3 0 01-3-3z"/><circle cx="10.5" cy="15.5" r="2"/><circle cx="21.5" cy="15.5" r="2"/></svg>
+                    <span class="ct-choice-title">Expérience WebXR</span>
+                    <span class="ct-choice-desc">Réalité virtuelle ou augmentée dans le navigateur.</span>
+                  </span>
+                </label>
+                <label class="ct-choice">
+                  <input type="radio" name="type" value="Installation / événement">
+                  <span class="ct-choice-box">
+                    <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="5" width="24" height="15" rx="2"/><path d="M12 27h8M16 20v7"/><path d="M9 15l3-4 3 2 4-5 4 7"/></svg>
+                    <span class="ct-choice-title">Installation</span>
+                    <span class="ct-choice-desc">Écrans géants, salons, musées, événements.</span>
+                  </span>
+                </label>
+                <label class="ct-choice">
+                  <input type="radio" name="type" value="Jeu web">
+                  <span class="ct-choice-box">
+                    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 10h14a6 6 0 016 6v1a5 5 0 01-9 3l-1-1h-6l-1 1a5 5 0 01-9-3v-1a6 6 0 016-6z"/><path d="M10 14v4M8 16h4"/><circle cx="21" cy="15" r=".6"/><circle cx="23" cy="17.5" r=".6"/></svg>
+                    <span class="ct-choice-title">Jeu web</span>
+                    <span class="ct-choice-desc">Advergame, mini-jeu de marque, gamification.</span>
+                  </span>
+                </label>
+                <label class="ct-choice">
+                  <input type="radio" name="type" value="Autre chose">
+                  <span class="ct-choice-box">
+                    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4l2.6 7.4L26 14l-7.4 2.6L16 24l-2.6-7.4L6 14l7.4-2.6z"/><path d="M25 22l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/></svg>
+                    <span class="ct-choice-title">Autre chose</span>
+                    <span class="ct-choice-desc">Surprenez-nous, on aime les idées hors cases.</span>
+                  </span>
+                </label>
+              </div>
+              <p class="ct-error" id="err-type" data-error-for="type"></p>
+            </fieldset>
+
+            <fieldset class="ct-group" id="group-budget" aria-describedby="hint-budget err-budget">
+              <legend>Budget estimé <span class="ct-req" aria-hidden="true">*</span><span class="ct-sr"> (obligatoire)</span></legend>
+              <p class="ct-hint" id="hint-budget">Une fourchette suffit : elle nous aide à proposer la bonne approche.</p>
+              <div class="ct-pills">
+                <label class="ct-pill"><input type="radio" name="budget" value="Moins de 10 k€" required><span>&lt; 10 k€</span></label>
+                <label class="ct-pill"><input type="radio" name="budget" value="10 à 25 k€"><span>10 – 25 k€</span></label>
+                <label class="ct-pill"><input type="radio" name="budget" value="25 à 50 k€"><span>25 – 50 k€</span></label>
+                <label class="ct-pill"><input type="radio" name="budget" value="50 à 100 k€"><span>50 – 100 k€</span></label>
+                <label class="ct-pill"><input type="radio" name="budget" value="Plus de 100 k€"><span>&gt; 100 k€</span></label>
+                <label class="ct-pill"><input type="radio" name="budget" value="Je ne sais pas encore"><span>Je ne sais pas encore</span></label>
+              </div>
+              <p class="ct-error" id="err-budget" data-error-for="budget"></p>
+            </fieldset>
+
+            <fieldset class="ct-group" id="group-delay" aria-describedby="err-delay">
+              <legend>Délai souhaité <span class="ct-req" aria-hidden="true">*</span><span class="ct-sr"> (obligatoire)</span></legend>
+              <div class="ct-pills">
+                <label class="ct-pill"><input type="radio" name="delay" value="Dès que possible" required><span>Dès que possible</span></label>
+                <label class="ct-pill"><input type="radio" name="delay" value="1 à 3 mois"><span>1 à 3 mois</span></label>
+                <label class="ct-pill"><input type="radio" name="delay" value="3 à 6 mois"><span>3 à 6 mois</span></label>
+                <label class="ct-pill"><input type="radio" name="delay" value="Pas de date fixe"><span>Pas de date fixe</span></label>
+              </div>
+              <p class="ct-error" id="err-delay" data-error-for="delay"></p>
+            </fieldset>
+          </div>
+
+          <!-- Étape 2 -->
+          <div class="ct-panel" id="ct-step-2" data-step="2" hidden>
+            <h3 class="ct-panel-title" tabindex="-1">Comment vous joindre&nbsp;?</h3>
+
+            <div class="ct-fields">
+              <div class="ct-field">
+                <input class="ct-input" type="text" id="f-name" name="name" autocomplete="name" placeholder=" " required minlength="2" maxlength="80" aria-describedby="err-name">
+                <label for="f-name">Nom et prénom <span class="ct-req" aria-hidden="true">*</span><span class="ct-sr"> (obligatoire)</span></label>
+                <p class="ct-error" id="err-name" data-error-for="name"></p>
+              </div>
+
+              <div class="ct-field">
+                <input class="ct-input" type="email" id="f-email" name="email" autocomplete="email" inputmode="email" placeholder=" " required maxlength="120" aria-describedby="err-email">
+                <label for="f-email">Adresse e-mail <span class="ct-req" aria-hidden="true">*</span><span class="ct-sr"> (obligatoire)</span></label>
+                <p class="ct-error" id="err-email" data-error-for="email"></p>
+              </div>
+
+              <div class="ct-field ct-field-wide">
+                <input class="ct-input" type="text" id="f-company" name="company" autocomplete="organization" placeholder=" " maxlength="80" aria-describedby="hint-company err-company">
+                <label for="f-company">Entreprise ou structure <span class="ct-optional">(facultatif)</span></label>
+                <p class="ct-hint" id="hint-company">Agence, marque, institution, projet perso… tout nous va.</p>
+                <p class="ct-error" id="err-company" data-error-for="company"></p>
+              </div>
+
+              <div class="ct-field ct-field-wide">
+                <textarea class="ct-input ct-textarea" id="f-message" name="message" rows="6" placeholder=" " required minlength="30" maxlength="1200" aria-describedby="ct-counter err-message"></textarea>
+                <label for="f-message">Votre message <span class="ct-req" aria-hidden="true">*</span><span class="ct-sr"> (obligatoire)</span></label>
+                <div class="ct-field-foot">
+                  <p class="ct-error" id="err-message" data-error-for="message"></p>
+                  <p class="ct-counter" id="ct-counter"><span id="ct-count">0</span> / 1200 caractères<span class="ct-sr"> (minimum 30)</span></p>
+                </div>
+                <p class="ct-sr" id="ct-counter-live" aria-live="polite"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Étape 3 -->
+          <div class="ct-panel" id="ct-step-3" data-step="3" hidden>
+            <h3 class="ct-panel-title" tabindex="-1">On vérifie avant le décollage</h3>
+            <p class="ct-hint">Relisez votre brief. Chaque ligne peut être modifiée.</p>
+
+            <dl class="ct-recap" id="ct-recap">
+              <div class="ct-recap-row"><dt>Type de projet</dt><dd data-recap="type"></dd><button type="button" class="ct-edit" data-edit="type" aria-label="Modifier le type de projet">Modifier</button></div>
+              <div class="ct-recap-row"><dt>Budget</dt><dd data-recap="budget"></dd><button type="button" class="ct-edit" data-edit="budget" aria-label="Modifier le budget">Modifier</button></div>
+              <div class="ct-recap-row"><dt>Délai</dt><dd data-recap="delay"></dd><button type="button" class="ct-edit" data-edit="delay" aria-label="Modifier le délai">Modifier</button></div>
+              <div class="ct-recap-row"><dt>Nom</dt><dd data-recap="name"></dd><button type="button" class="ct-edit" data-edit="name" aria-label="Modifier le nom">Modifier</button></div>
+              <div class="ct-recap-row"><dt>E-mail</dt><dd data-recap="email"></dd><button type="button" class="ct-edit" data-edit="email" aria-label="Modifier l'adresse e-mail">Modifier</button></div>
+              <div class="ct-recap-row"><dt>Entreprise</dt><dd data-recap="company"></dd><button type="button" class="ct-edit" data-edit="company" aria-label="Modifier l'entreprise">Modifier</button></div>
+              <div class="ct-recap-row ct-recap-message"><dt>Message</dt><dd data-recap="message"></dd><button type="button" class="ct-edit" data-edit="message" aria-label="Modifier le message">Modifier</button></div>
+            </dl>
+
+            <p class="ct-subject">Objet de l'e-mail : <span id="ct-subject-preview"></span></p>
+
+            <div class="ct-consent-wrap">
+              <label class="ct-consent">
+                <input type="checkbox" id="f-consent" name="consent" required aria-describedby="err-consent">
+                <span class="ct-check" aria-hidden="true"></span>
+                <span>J'ai compris que ce formulaire n'envoie rien : il prépare un e-mail que j'enverrai moi-même, et j'accepte qu'ORBITALE utilise ces informations uniquement pour me répondre. <a href="mentions.html#donnees">En savoir plus</a></span>
+              </label>
+              <p class="ct-error" id="err-consent" data-error-for="consent"></p>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="ct-actions">
+            <button type="button" class="ct-back" id="ct-back" hidden>← Retour</button>
+            <button type="submit" class="btn ct-next" id="ct-next"><span id="ct-next-label">Continuer</span></button>
+          </div>
+
+          <div class="ct-draft">
+            <p id="ct-draft-status" aria-live="polite">Votre brouillon sera enregistré sur cet appareil.</p>
+            <button type="button" class="ct-draft-clear" id="ct-draft-clear">Effacer le brouillon</button>
+          </div>
+          <p class="ct-sr" id="ct-form-live" aria-live="assertive"></p>
+        </form>
+
+        <!-- Écran de succès -->
+        <div class="ct-success" id="ct-success" hidden>
+          <div class="ct-launch" aria-hidden="true">
+            <div class="ct-launch-stars"></div>
+            <div class="ct-planet"></div>
+            <div class="ct-orbit"><span class="ct-orbit-dot"></span></div>
+            <svg class="ct-rocket" viewBox="0 0 64 128">
+              <defs>
+                <linearGradient id="ct-rocket-body" x1="0" x2="1">
+                  <stop offset="0" stop-color="#d9d4ff"/>
+                  <stop offset="1" stop-color="#ffffff"/>
+                </linearGradient>
+                <linearGradient id="ct-rocket-flame" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#00e5ff"/>
+                  <stop offset=".5" stop-color="#7c5cff"/>
+                  <stop offset="1" stop-color="#ff3d81" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path class="ct-flame" d="M24 88 Q32 128 40 88 Z" fill="url(#ct-rocket-flame)"/>
+              <path d="M32 6 C46 22 48 48 46 86 H18 C16 48 18 22 32 6 Z" fill="url(#ct-rocket-body)"/>
+              <path d="M18 62 L6 84 L18 82 Z M46 62 L58 84 L46 82 Z" fill="#7c5cff"/>
+              <circle cx="32" cy="44" r="8" fill="#05050a" stroke="#00e5ff" stroke-width="3"/>
+              <path d="M26 86 h12 v6 h-12 z" fill="#ff3d81"/>
+            </svg>
+          </div>
+          <h3 class="ct-success-title" id="ct-success-title" tabindex="-1">Message prêt au <span class="accent">décollage</span></h3>
+          <p class="ct-success-text">Votre e-mail est préparé, mais <strong>il n'est pas encore parti</strong>&nbsp;: ouvrez-le dans votre messagerie, relisez-le puis envoyez-le. Si rien ne s'ouvre, copiez le texte et écrivez-nous à <a href="mailto:contact@example.com">contact@example.com</a>.</p>
+          <div class="ct-success-actions">
+            <a class="btn btn-big" id="ct-mailto" href="mailto:contact@example.com" data-magnetic><span>Ouvrir dans ma messagerie</span></a>
+            <button type="button" class="ct-ghost" id="ct-copy-message">Copier le message</button>
+          </div>
+          <p class="ct-sr" id="ct-success-live" aria-live="polite"></p>
+          <div class="ct-success-links">
+            <button type="button" class="ct-link-btn" id="ct-edit-again">Modifier mon brief</button>
+            <button type="button" class="ct-link-btn" id="ct-restart">Nouveau message</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Ensuite                                                           -->
+    <!-- ================================================================ -->
+    <section class="ct-next-steps" aria-labelledby="ct-next-title">
+      <div class="ct-container">
+        <p class="ct-eyebrow" data-reveal>Après votre message</p>
+        <h2 class="section-title" id="ct-next-title" data-reveal>Ce qui se passe <span class="accent">ensuite</span></h2>
+        <ol class="ct-timeline">
+          <li data-reveal>
+            <span class="ct-tl-num">01</span>
+            <h3>On lit tout</h3>
+            <p>Votre message arrive chez les fondateurs, pas dans un logiciel de tickets. On revient vers vous sous 48&nbsp;heures ouvrées.</p>
+          </li>
+          <li data-reveal>
+            <span class="ct-tl-num">02</span>
+            <h3>Appel découverte</h3>
+            <p>Trente minutes en visio pour comprendre vos objectifs, votre public et vos contraintes techniques.</p>
+          </li>
+          <li data-reveal>
+            <span class="ct-tl-num">03</span>
+            <h3>Proposition</h3>
+            <p>Sous dix jours : une note d'intention, un prototype de principe si besoin, un planning et un budget détaillé.</p>
+          </li>
+          <li data-reveal>
+            <span class="ct-tl-num">04</span>
+            <h3>Décollage</h3>
+            <p>Atelier de lancement, points hebdomadaires et une démo jouable toutes les deux semaines jusqu'à la mise en orbite.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Infos pratiques                                                   -->
+    <!-- ================================================================ -->
+    <section class="ct-infos" id="ct-infos" aria-labelledby="ct-infos-title">
+      <div class="ct-container">
+        <p class="ct-eyebrow" data-reveal>Coordonnées</p>
+        <h2 class="section-title" id="ct-infos-title" data-reveal>Nous <span class="accent">trouver</span></h2>
+        <div class="ct-info-grid">
+          <article class="ct-info ct-info-mail" data-reveal>
+            <h3>E-mail</h3>
+            <p class="ct-info-big"><a href="mailto:contact@example.com" id="ct-email-link">contact@example.com</a></p>
+            <p>Le canal le plus rapide. Une question courte&nbsp;? Écrivez directement, sans passer par le formulaire.</p>
+            <button type="button" class="ct-copy" id="ct-copy-email" data-copy="contact@example.com">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 00-2-2H6a2 2 0 00-2 2v8a2 2 0 002 2h2"/></svg>
+              <span class="ct-copy-label">Copier l'e-mail</span>
+            </button>
+            <p class="ct-sr" id="ct-copy-live" aria-live="polite"></p>
+          </article>
+
+          <article class="ct-info" data-reveal>
+            <h3>Horaires</h3>
+            <ul class="ct-hours">
+              <li><span>Lundi – jeudi</span><span>9 h 30 – 18 h 30</span></li>
+              <li><span>Vendredi</span><span>9 h 30 – 17 h</span></li>
+              <li><span>Week-end</span><span>Fermé (on code quand même)</span></li>
+            </ul>
+            <p class="ct-small">Heure de Paris. Réponses possibles en français et en anglais.</p>
+          </article>
+
+          <article class="ct-info ct-info-stat" data-reveal>
+            <h3>Temps de réponse moyen</h3>
+            <p class="ct-stat"><span class="ct-stat-num" data-count="31">31</span><span class="ct-stat-unit">h</span></p>
+            <p>Calculé sur nos derniers échanges. Pendant les périodes de production intense, comptez au maximum deux jours ouvrés.</p>
+          </article>
+
+          <article class="ct-info" data-reveal>
+            <h3>Studio</h3>
+            <address>
+              ORBITALE — studio 3D<br>
+              42 avenue des Comètes<br>
+              00000 Exempleville, France
+            </address>
+            <p class="ct-small">Adresse fictive. Visites sur rendez-vous uniquement : le café est bon, le canapé est confortable.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- FAQ                                                               -->
+    <!-- ================================================================ -->
+    <section class="ct-faq" aria-labelledby="ct-faq-title">
+      <div class="ct-container ct-faq-grid">
+        <div>
+          <p class="ct-eyebrow" data-reveal>Questions fréquentes</p>
+          <h2 class="section-title" id="ct-faq-title" data-reveal>Avant de <span class="accent">nous écrire</span></h2>
+        </div>
+        <div class="ct-faq-list">
+          <details class="ct-faq-item" data-reveal>
+            <summary>Combien coûte une expérience 3D&nbsp;?</summary>
+            <div class="ct-faq-body"><p>Cela dépend surtout du nombre de scènes, du niveau d'interaction et des contenus à produire. Un module 3D intégré à un site existant démarre autour de 8&nbsp;k€, un site immersif complet se situe généralement entre 25 et 60&nbsp;k€. Le devis est toujours détaillé, poste par poste.</p></div>
+          </details>
+          <details class="ct-faq-item" data-reveal>
+            <summary>Combien de temps faut-il&nbsp;?</summary>
+            <div class="ct-faq-body"><p>Comptez quatre à six semaines pour un module ciblé, et deux à quatre mois pour un projet complet. Nous livrons une version jouable dès les premières semaines, ce qui permet d'ajuster le tir très tôt.</p></div>
+          </details>
+          <details class="ct-faq-item" data-reveal>
+            <summary>Travaillez-vous avec des agences ou des équipes internes&nbsp;?</summary>
+            <div class="ct-faq-body"><p>Oui, très souvent. Nous pouvons prendre en charge toute la partie 3D et temps réel pendant que votre agence ou votre équipe garde la main sur la stratégie, le design global ou le back-end.</p></div>
+          </details>
+          <details class="ct-faq-item" data-reveal>
+            <summary>Que devient ce que je saisis dans le formulaire&nbsp;?</summary>
+            <div class="ct-faq-body"><p>Rien ne quitte votre navigateur&nbsp;: le formulaire prépare un e-mail que vous envoyez vous-même. Votre brouillon est conservé dans le stockage local de cet appareil pour ne rien perdre, et vous pouvez l'effacer à tout moment. Les détails sont dans nos <a href="mentions.html#donnees">mentions légales</a>.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- CTA                                                               -->
+    <!-- ================================================================ -->
+    <section class="ct-cta" aria-labelledby="ct-cta-title">
+      <div class="ct-cta-inner" data-reveal>
+        <p class="ct-eyebrow">Pas encore prêt&nbsp;?</p>
+        <h2 class="ct-cta-title" id="ct-cta-title">Explorez d'abord,<br><span class="accent">écrivez ensuite</span></h2>
+        <p class="ct-lead">Parcourez nos réalisations ou jouez avec les expériences du labo&nbsp;: elles en disent souvent plus long qu'une plaquette.</p>
+        <div class="ct-cta-actions">
+          <a href="projets.html" class="btn btn-big" data-magnetic><span>Voir les projets</span></a>
+          <a href="labo.html" class="ct-ghost">Ouvrir le labo</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">ORBITALE<span>.</span></a>
+        <p>Studio d'expériences 3D interactives. On transforme les idées en mondes qu'on peut toucher.</p>
+      </div>
+      <div>
+        <h4>Explorer</h4>
+        <nav class="footer-links" aria-label="Pages">
+          <a href="index.html">Accueil</a>
+          <a href="projets.html">Projets</a>
+          <a href="labo.html">Labo</a>
+          <a href="studio.html">Studio</a>
+        </nav>
+      </div>
+      <div>
+        <h4>Plus</h4>
+        <nav class="footer-links" aria-label="Autres pages">
+          <a href="jeu.html">Jeu</a>
+          <a href="contact.html">Contact</a>
+          <a href="mentions.html">Mentions légales</a>
+        </nav>
+      </div>
+      <button class="footer-top" type="button" data-back-to-top aria-label="Retour en haut">↑</button>
+    </div>
+    <p class="footer-copy">© 2026 ORBITALE — fait avec Three.js &amp; GSAP. Zéro ligne de Java.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jeu — ORBITE — ORBITALE</title>
+  <meta name="description" content="ORBITE, le mini-jeu arcade 3D d'ORBITALE : pilotez une sonde lumineuse dans un tunnel néon infini, évitez anneaux, blocs et lasers, enchaînez les orbes. Jouable au clavier, à la souris et au doigt.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/jeu.css">
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="js/jeu.js"></script>
+</head>
+<body>
+  <div class="curtain is-covering" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a href="index.html" class="nav-logo">ORBITALE<span>.</span></a>
+    <nav class="nav-links" id="nav-links" aria-label="Navigation principale">
+      <a href="index.html" data-magnetic>Accueil</a>
+      <a href="projets.html" data-magnetic>Projets</a>
+      <a href="labo.html" data-magnetic>Labo</a>
+      <a href="studio.html" data-magnetic>Studio</a>
+      <a href="jeu.html" data-magnetic>Jeu</a>
+      <a href="contact.html" data-magnetic>Contact</a>
+    </nav>
+    <button class="nav-burger" id="nav-burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
+  </header>
+
+  <main>
+    <!-- ===== Introduction ===== -->
+    <section class="jeu-hero" aria-labelledby="jeu-hero-title">
+      <div class="jeu-hero-rings" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <p class="jeu-kicker" data-reveal>Mini-jeu maison — sonde O-7</p>
+      <h1 class="jeu-hero-title" id="jeu-hero-title"><span class="accent">Orbite</span></h1>
+      <p class="jeu-hero-sub" data-reveal>Une sonde, un tunnel néon sans fin, et la vitesse qui grimpe sans jamais redescendre. Tournez autour de la paroi, glissez dans les ouvertures, avalez les orbes.</p>
+      <div class="jeu-hero-actions" data-reveal>
+        <a href="#jeu" class="btn btn-big" data-magnetic data-scroll-play><span>Lancer une partie</span></a>
+        <a href="#regles" class="jeu-link" data-magnetic>Comment jouer</a>
+      </div>
+      <ul class="jeu-chips" aria-label="Fiche technique" data-reveal>
+        <li>Three.js &amp; GLSL maison</li>
+        <li>Physique à 120&nbsp;Hz</li>
+        <li>Sons 100&nbsp;% synthétisés</li>
+        <li>0 image, 0 fichier audio</li>
+      </ul>
+    </section>
+
+    <!-- ===== Le jeu ===== -->
+    <section class="arena" id="jeu" aria-labelledby="arena-title">
+      <div class="arena-head">
+        <h2 class="section-title" id="arena-title" data-reveal>La <span class="accent">piste</span></h2>
+        <p class="arena-intro" data-reveal>Cliquez sur la zone de jeu pour lui donner le focus : les flèches et la barre d'espace ne feront plus défiler la page.</p>
+      </div>
+
+      <div class="stage" id="stage" tabindex="0" data-state="title" aria-label="Zone de jeu ORBITE. Flèches gauche et droite, A, Q ou D pour tourner. Espace ou Échap pour mettre en pause." aria-describedby="stage-help">
+        <canvas class="stage-canvas" id="game-canvas" role="img" aria-label="Tunnel néon en 3D dans lequel file la sonde"></canvas>
+        <div class="stage-vignette" aria-hidden="true"></div>
+        <div class="stage-flash" id="stage-flash" aria-hidden="true"></div>
+
+        <!-- HUD -->
+        <div class="hud" aria-hidden="true">
+          <div class="hud-corner hud-tl">
+            <div class="hud-item">
+              <span class="hud-label">Score</span>
+              <span class="hud-value hud-score" id="hud-score">0</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">Record</span>
+              <span class="hud-value hud-small" id="hud-best">0</span>
+            </div>
+          </div>
+          <div class="hud-combo" id="hud-combo-wrap">
+            <span class="hud-mult" id="hud-mult">×1</span>
+            <span class="hud-label" id="hud-combo">0 orbe</span>
+          </div>
+          <div class="hud-corner hud-bl">
+            <span class="hud-label">Vitesse</span>
+            <span class="hud-value hud-small"><span id="hud-speed">0</span> <small>km/h</small></span>
+            <span class="hud-label hud-tier" id="hud-tier">Palier 1</span>
+          </div>
+          <div class="hud-corner hud-br">
+            <div class="hud-bar" id="hud-shield-wrap">
+              <span class="hud-label">Bouclier</span>
+              <span class="hud-track"><span class="hud-fill hud-fill-shield" id="hud-shield"></span></span>
+            </div>
+            <div class="hud-bar" id="hud-slow-wrap">
+              <span class="hud-label">Ralenti</span>
+              <span class="hud-track"><span class="hud-fill hud-fill-slow" id="hud-slow"></span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Outils -->
+        <div class="stage-tools">
+          <button class="tool" type="button" data-action="pause" aria-label="Mettre en pause">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+          </button>
+          <button class="tool" type="button" data-action="sound" aria-pressed="false" aria-label="Activer le son">
+            <svg class="icon-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l4 6M21 9l-4 6"/></svg>
+            <svg class="icon-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+          </button>
+          <button class="tool" type="button" data-action="fullscreen" aria-pressed="false" aria-label="Plein écran">
+            <svg class="icon-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+            <svg class="icon-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>
+          </button>
+        </div>
+
+        <p class="stage-toast" id="stage-toast" aria-hidden="true"></p>
+
+        <div class="touch-zones" aria-hidden="true">
+          <span><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></span>
+          <span><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </div>
+
+        <!-- Écran titre -->
+        <div class="screen is-active" data-screen="title">
+          <div class="screen-card">
+            <p class="screen-kicker">Mission 01 — Tunnel Θ</p>
+            <p class="screen-title">Orbite</p>
+            <ul class="screen-rules">
+              <li><span class="rule-dot rule-orb" aria-hidden="true"></span>Ramassez les orbes et enchaînez-les : tous les 5, le multiplicateur grimpe.</li>
+              <li><span class="rule-dot rule-obstacle" aria-hidden="true"></span>Évitez anneaux, blocs et lasers : un contact et le signal est perdu.</li>
+              <li><span class="rule-dot rule-bonus" aria-hidden="true"></span>Bouclier : encaisse un choc. Ralenti : six secondes de répit.</li>
+            </ul>
+            <button class="btn btn-big" type="button" data-action="play"><span>Jouer</span></button>
+            <p class="screen-keys">
+              <kbd>←</kbd><kbd>→</kbd> ou <kbd>A</kbd>/<kbd>Q</kbd> · <kbd>D</kbd>
+              <span class="sep">·</span> souris <span class="sep">·</span> doigt
+              <span class="sep">·</span> <kbd>Espace</kbd> pause
+            </p>
+          </div>
+        </div>
+
+        <!-- Pause -->
+        <div class="screen" data-screen="pause" inert>
+          <div class="screen-card">
+            <p class="screen-kicker">Signal suspendu</p>
+            <p class="screen-title">Pause</p>
+            <div class="screen-actions">
+              <button class="btn" type="button" data-action="resume"><span>Reprendre</span></button>
+              <button class="btn btn-ghost" type="button" data-action="restart"><span>Recommencer</span></button>
+            </div>
+            <button class="jeu-link screen-quit" type="button" data-action="quit">Revenir à l'écran titre</button>
+          </div>
+        </div>
+
+        <!-- Fin de partie -->
+        <div class="screen" data-screen="over" inert>
+          <div class="screen-card">
+            <p class="screen-kicker">Signal perdu</p>
+            <p class="over-score" id="over-score">0</p>
+            <p class="over-badge" id="over-badge" hidden>Nouveau record&nbsp;!</p>
+            <p class="over-rank" id="over-rank"></p>
+            <dl class="over-stats">
+              <div><dt>Distance</dt><dd id="over-distance">0 m</dd></div>
+              <div><dt>Orbes</dt><dd id="over-orbs">0</dd></div>
+              <div><dt>Combo max</dt><dd id="over-combo">0</dd></div>
+              <div><dt>Durée</dt><dd id="over-time">0 s</dd></div>
+            </dl>
+            <div class="screen-actions">
+              <button class="btn" type="button" data-action="restart"><span>Rejouer</span></button>
+              <button class="btn btn-ghost" type="button" data-action="share"><span>Partager</span></button>
+            </div>
+            <p class="over-share" id="share-status" role="status"></p>
+          </div>
+        </div>
+
+        <!-- WebGL indisponible -->
+        <div class="screen" data-screen="error" inert>
+          <div class="screen-card">
+            <p class="screen-kicker">Moteur hors ligne</p>
+            <p class="screen-title screen-title-sm">WebGL indisponible</p>
+            <p class="screen-text">Votre navigateur ou votre carte graphique refuse d'ouvrir un contexte 3D. Essayez un navigateur récent, ou activez l'accélération matérielle dans ses réglages.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="stage-help" id="stage-help">
+        <span class="stage-help-key">Astuce</span>
+        La souris dirige à la volée : plus elle s'éloigne du centre de la zone, plus la sonde tourne vite. Au doigt, glissez, ou maintenez une moitié de l'écran.
+      </p>
+      <p class="jeu-sr" id="game-live" aria-live="polite"></p>
+    </section>
+
+    <!-- ===== Records ===== -->
+    <section class="records" id="records" aria-labelledby="records-title">
+      <div class="records-head">
+        <h2 class="section-title" id="records-title" data-reveal>Vos <span class="accent">records</span></h2>
+        <p data-reveal>Rien ne quitte votre appareil : les cinq meilleures parties sont gardées dans ce navigateur, nulle part ailleurs.</p>
+      </div>
+
+      <div class="records-grid">
+        <div class="records-best" data-reveal>
+          <span class="records-label">Meilleur score</span>
+          <strong class="records-big" id="rec-best">0</strong>
+          <dl class="records-meta">
+            <div><dt>Parties jouées</dt><dd id="rec-plays">0</dd></div>
+            <div><dt>Meilleur combo</dt><dd id="rec-combo">0</dd></div>
+            <div><dt>Plus longue course</dt><dd id="rec-distance">0 m</dd></div>
+          </dl>
+          <button class="jeu-link records-reset" type="button" id="rec-reset">Effacer mes records</button>
+        </div>
+
+        <div class="records-table-wrap" data-reveal>
+          <table class="records-table">
+            <caption class="jeu-sr">Les cinq meilleurs scores enregistrés dans ce navigateur</caption>
+            <thead>
+              <tr>
+                <th scope="col">Rang</th>
+                <th scope="col">Score</th>
+                <th scope="col" class="col-opt">Distance</th>
+                <th scope="col">Combo</th>
+                <th scope="col" class="col-opt">Date</th>
+              </tr>
+            </thead>
+            <tbody id="rec-body"></tbody>
+          </table>
+          <p class="records-note" id="rec-note"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Comment jouer ===== -->
+    <section class="howto" id="regles" aria-labelledby="howto-title">
+      <h2 class="section-title" id="howto-title" data-reveal>Comment <span class="accent">jouer</span></h2>
+      <p class="howto-intro" data-reveal>La sonde est collée à la paroi d'un tunnel cylindrique. Vous ne montez ni ne descendez : vous tournez autour de l'axe, à gauche ou à droite. La caméra pivote avec vous, la sonde reste toujours en bas de l'écran.</p>
+
+      <div class="howto-grid">
+        <article class="howto-card" data-reveal>
+          <svg class="howto-svg" viewBox="0 0 240 150" role="img" aria-labelledby="svg-kb-title">
+            <title id="svg-kb-title">Clavier : flèches gauche et droite, touches A, Q et D, barre d'espace</title>
+            <rect class="svg-key" x="20" y="40" width="44" height="40" rx="9"/>
+            <path class="svg-glyph" d="M48 60H36M41 54l-6 6 6 6"/>
+            <rect class="svg-key svg-key-on" x="176" y="40" width="44" height="40" rx="9"/>
+            <path class="svg-glyph" d="M192 60h12M199 54l6 6-6 6"/>
+            <rect class="svg-key" x="74" y="40" width="40" height="40" rx="9"/>
+            <text class="svg-letter" x="94" y="66">Q</text>
+            <rect class="svg-key" x="126" y="40" width="40" height="40" rx="9"/>
+            <text class="svg-letter" x="146" y="66">D</text>
+            <rect class="svg-key" x="56" y="98" width="128" height="30" rx="9"/>
+            <text class="svg-small" x="120" y="118">ESPACE · PAUSE</text>
+            <path class="svg-arc" d="M40 26 A90 30 0 0 1 200 26"/>
+            <path class="svg-arrow" d="M193 20l7 6-9 3"/>
+          </svg>
+          <h3>Au clavier</h3>
+          <p><kbd>←</kbd> <kbd>→</kbd>, <kbd>A</kbd> ou <kbd>Q</kbd> pour la gauche, <kbd>D</kbd> pour la droite : QWERTY comme AZERTY. <kbd>Espace</kbd>, <kbd>Échap</kbd> ou <kbd>P</kbd> pour souffler.</p>
+        </article>
+
+        <article class="howto-card" data-reveal>
+          <svg class="howto-svg" viewBox="0 0 240 150" role="img" aria-labelledby="svg-mouse-title">
+            <title id="svg-mouse-title">Souris : la distance au centre règle la vitesse de rotation</title>
+            <rect class="svg-frame" x="14" y="18" width="212" height="112" rx="12"/>
+            <defs>
+              <linearGradient id="svg-mouse-grad" x1="0" x2="1">
+                <stop offset="0" stop-color="#ff3d81" stop-opacity="0.55"/>
+                <stop offset="0.45" stop-color="#7c5cff" stop-opacity="0"/>
+                <stop offset="0.55" stop-color="#7c5cff" stop-opacity="0"/>
+                <stop offset="1" stop-color="#00e5ff" stop-opacity="0.55"/>
+              </linearGradient>
+            </defs>
+            <rect x="24" y="96" width="192" height="10" rx="5" fill="url(#svg-mouse-grad)"/>
+            <path class="svg-dash" d="M120 26v96"/>
+            <text class="svg-small" x="120" y="122">CENTRE = TOUT DROIT</text>
+            <path class="svg-cursor" d="M172 44l0 30 8-8 6 13 6-3-6-12 11-1z"/>
+            <path class="svg-arrow-line" d="M128 58h34"/>
+            <path class="svg-arrow" d="M156 52l7 6-7 6"/>
+          </svg>
+          <h3>À la souris</h3>
+          <p>Survolez la zone de jeu : à droite du centre, la sonde tourne à droite, et d'autant plus vite que le pointeur s'écarte. Revenez au milieu pour filer droit.</p>
+        </article>
+
+        <article class="howto-card" data-reveal>
+          <svg class="howto-svg" viewBox="0 0 240 150" role="img" aria-labelledby="svg-touch-title">
+            <title id="svg-touch-title">Tactile : glisser le doigt ou maintenir une moitié de l'écran</title>
+            <rect class="svg-frame" x="70" y="10" width="100" height="130" rx="16"/>
+            <path class="svg-dash" d="M120 22v106"/>
+            <rect class="svg-zone" x="78" y="22" width="38" height="106" rx="8"/>
+            <text class="svg-small" x="97" y="80">‹</text>
+            <text class="svg-small" x="143" y="80">›</text>
+            <circle class="svg-finger" cx="140" cy="108" r="9"/>
+            <path class="svg-arrow-line" d="M14 70h44M182 70h44"/>
+            <path class="svg-arrow" d="M20 64l-7 6 7 6M220 64l7 6-7 6"/>
+          </svg>
+          <h3>Au doigt</h3>
+          <p>Glissez horizontalement pour faire pivoter la sonde au millimètre, ou gardez simplement le pouce appuyé sur la moitié gauche ou droite de l'écran.</p>
+        </article>
+      </div>
+
+      <h3 class="legend-title" data-reveal>Ce qui vous attend dans le tunnel</h3>
+      <ul class="legend">
+        <li class="legend-item" data-reveal>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle class="lg-glow-orb" cx="24" cy="24" r="16"/><path class="lg-orb" d="M24 12l10 8-4 12H18l-4-12z"/></svg>
+          <div><h4>Orbe d'énergie</h4><p>25 points × multiplicateur. Cinq d'affilée et le multiplicateur gagne un cran, jusqu'à ×8. En rater un remet le combo à zéro.</p></div>
+        </li>
+        <li class="legend-item" data-reveal>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle class="lg-glow-shield" cx="24" cy="24" r="17"/><path class="lg-shield" d="M24 9l12 15-12 15-12-15z M12 24h24"/></svg>
+          <div><h4>Bouclier</h4><p>Une bulle qui encaisse un choc et pulvérise l'obstacle. Elle s'use en quatorze secondes : la jauge du HUD vous dit combien il reste.</p></div>
+        </li>
+        <li class="legend-item" data-reveal>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle class="lg-glow-slow" cx="24" cy="24" r="17"/><circle class="lg-slow" cx="24" cy="24" r="10"/><path class="lg-slow" d="M24 18v6l4 3"/></svg>
+          <div><h4>Ralenti</h4><p>Six secondes où le tunnel s'épaissit et se désature. Vos réflexes, eux, restent à pleine vitesse.</p></div>
+        </li>
+        <li class="legend-item" data-reveal>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path class="lg-danger" d="M33.2 9.3A17 17 0 1 1 14.8 9.3"/><path class="lg-danger-soft" d="M30 15.8A10 10 0 1 1 18 15.8"/></svg>
+          <div><h4>Anneau à trou</h4><p>Un mur circulaire avec une ou deux ouvertures. Certains tournent : suivez la brèche plutôt que de l'attendre.</p></div>
+        </li>
+        <li class="legend-item" data-reveal>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><rect class="lg-danger" x="12" y="14" width="24" height="20" rx="2"/><rect class="lg-danger-soft" x="17" y="19" width="14" height="10"/></svg>
+          <div><h4>Bloc</h4><p>Des piliers posés sur la paroi, parfois décalés en profondeur. Il reste toujours un passage, à vous de le voir à temps.</p></div>
+        </li>
+        <li class="legend-item" data-reveal>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle class="lg-danger-soft" cx="24" cy="24" r="17"/><path class="lg-danger" d="M24 24L39 18M24 24L9 30"/><circle class="lg-danger" cx="24" cy="24" r="3"/></svg>
+          <div><h4>Laser rotatif</h4><p>Deux ou trois rayons qui balaient le tunnel. Tournez dans le même sens qu'eux pour gagner du temps.</p></div>
+        </li>
+      </ul>
+
+      <div class="howto-score" data-reveal>
+        <div><strong>+0,5</strong><span>point par mètre parcouru</span></div>
+        <div><strong>×8</strong><span>multiplicateur maximal</span></div>
+        <div><strong>900 m</strong><span>entre deux paliers de couleur</span></div>
+        <div><strong>1 100</strong><span>km/h en vitesse de pointe</span></div>
+      </div>
+    </section>
+
+    <!-- ===== Coulisses ===== -->
+    <section class="backstage" id="coulisses" aria-labelledby="backstage-title">
+      <h2 class="section-title" id="backstage-title" data-reveal>Coulisses <span class="accent">du jeu</span></h2>
+      <p class="backstage-intro" data-reveal>ORBITE tient en quatre petits modules JavaScript, sans moteur de jeu ni ressource externe. Voici les trois idées qui le font tourner.</p>
+
+      <div class="backstage-list">
+        <article class="backstage-item" data-reveal>
+          <span class="backstage-num">01</span>
+          <div class="backstage-body">
+            <h3>Le monde défile, pas la sonde</h3>
+            <p>La sonde ne quitte jamais la position z&nbsp;=&nbsp;0. Ce sont les obstacles qui avancent vers elle, et le tunnel n'est qu'un cylindre immobile : un shader GLSL y dessine anneaux et nervures à partir de la distance parcourue. Les couleurs glissent d'une palette à l'autre à chaque palier, un brouillard maison efface le fond.</p>
+          </div>
+          <svg class="backstage-svg" viewBox="0 0 260 120" aria-hidden="true">
+            <path class="bs-wall" d="M10 20h240M10 100h240"/>
+            <path class="bs-ring" d="M60 20v80M110 20v80M160 20v80M210 20v80"/>
+            <circle class="bs-probe" cx="225" cy="88" r="6"/>
+            <rect class="bs-block" x="70" y="78" width="14" height="22"/>
+            <rect class="bs-block" x="140" y="20" width="14" height="22"/>
+            <path class="bs-flow" d="M30 60h150"/>
+            <path class="bs-flow-head" d="M172 53l9 7-9 7"/>
+            <text class="bs-text" x="225" y="70">z = 0</text>
+          </svg>
+        </article>
+
+        <article class="backstage-item" data-reveal>
+          <span class="backstage-num">02</span>
+          <div class="backstage-body">
+            <h3>Des collisions en coordonnées polaires</h3>
+            <p>Dans un tube, seul l'angle compte. Chaque obstacle se résume à un intervalle angulaire et à une épaisseur&nbsp;: anneau, bloc et rayon se testent en deux soustractions. Le recouvrement en profondeur est vérifié sur tout le trajet du pas, si bien qu'à 1&nbsp;100&nbsp;km/h rien ne traverse la sonde sans la toucher. La hitbox est réduite de 20&nbsp;% : les frôlements passent.</p>
+          </div>
+          <svg class="backstage-svg" viewBox="0 0 260 120" aria-hidden="true">
+            <circle class="bs-circle" cx="130" cy="60" r="48"/>
+            <path class="bs-arc" d="M171.6 36A48 48 0 1 1 130 12"/>
+            <circle class="bs-probe" cx="155" cy="19" r="6"/>
+            <path class="bs-dash" d="M130 60L155 19M130 60L178 60"/>
+            <path class="bs-angle" d="M150 60A20 20 0 0 0 140.4 43"/>
+            <text class="bs-text" x="160" y="52">θ</text>
+            <text class="bs-text bs-text-left" x="16" y="30">libre</text>
+            <text class="bs-text bs-text-left" x="16" y="100">bloqué</text>
+          </svg>
+        </article>
+
+        <article class="backstage-item" data-reveal>
+          <span class="backstage-num">03</span>
+          <div class="backstage-body">
+            <h3>Une boucle sobre, zéro déchet</h3>
+            <p>La physique avance par pas fixes de 1/120&nbsp;s, quel que soit l'écran. Anneaux, blocs, lasers, orbes et particules sont créés une seule fois puis recyclés dans des pools&nbsp;: aucune allocation pendant la partie, donc aucun à-coup du ramasse-miettes. Les sons sont des oscillateurs Web Audio, et tout s'arrête dès que l'onglet est caché.</p>
+          </div>
+          <svg class="backstage-svg" viewBox="0 0 260 120" aria-hidden="true">
+            <path class="bs-wall" d="M16 84h228"/>
+            <path class="bs-tick" d="M24 76v16M52 76v16M80 76v16M108 76v16M136 76v16M164 76v16M192 76v16M220 76v16"/>
+            <rect class="bs-pool" x="30" y="22" width="22" height="22" rx="5"/>
+            <rect class="bs-pool bs-pool-on" x="60" y="22" width="22" height="22" rx="5"/>
+            <rect class="bs-pool bs-pool-on" x="90" y="22" width="22" height="22" rx="5"/>
+            <rect class="bs-pool" x="120" y="22" width="22" height="22" rx="5"/>
+            <rect class="bs-pool bs-pool-on" x="150" y="22" width="22" height="22" rx="5"/>
+            <rect class="bs-pool" x="180" y="22" width="22" height="22" rx="5"/>
+            <path class="bs-flow" d="M210 33h24"/>
+            <path class="bs-dash" d="M234 33v18H40v-6"/>
+            <text class="bs-text" x="130" y="112">1 pas = 1/120 s</text>
+          </svg>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== Relance ===== -->
+    <section class="jeu-cta" aria-labelledby="jeu-cta-title">
+      <h2 class="section-title" id="jeu-cta-title" data-reveal>Encore <span class="accent">un tour&nbsp;?</span></h2>
+      <a href="#jeu" class="btn btn-big" data-magnetic data-scroll-play><span>Retour au tunnel</span></a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">ORBITALE<span>.</span></a>
+        <p>Studio d'expériences 3D interactives. On transforme les idées en mondes qu'on peut toucher.</p>
+      </div>
+      <div>
+        <h4>Explorer</h4>
+        <nav class="footer-links" aria-label="Pages">
+          <a href="index.html">Accueil</a>
+          <a href="projets.html">Projets</a>
+          <a href="labo.html">Labo</a>
+          <a href="studio.html">Studio</a>
+        </nav>
+      </div>
+      <div>
+        <h4>Plus</h4>
+        <nav class="footer-links" aria-label="Autres pages">
+          <a href="jeu.html">Jeu</a>
+          <a href="contact.html">Contact</a>
+          <a href="mentions.html">Mentions légales</a>
+        </nav>
+      </div>
+      <button class="footer-top" type="button" data-back-to-top aria-label="Retour en haut">↑</button>
+    </div>
+    <p class="footer-copy">© 2026 ORBITALE — fait avec Three.js &amp; GSAP. Zéro ligne de Java.</p>
+  </footer>
+</body>
+</html>

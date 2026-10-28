@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ORBITALE — Expérience 3D</title>
   <meta name="description" content="ORBITALE : un voyage interactif en 3D, animé de bout en bout.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
@@ -43,6 +44,24 @@
     <button class="nav-burger" id="nav-burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
   </header>
 
+  <!-- Progression de lecture -->
+  <div class="home-progress" aria-hidden="true"><span class="home-progress-bar" id="home-progress-bar"></span></div>
+
+  <!-- Indicateur de section (desktop) -->
+  <nav class="home-sectionnav" id="home-sectionnav" aria-label="Sections de la page">
+    <a href="#hero"><span>Accueil</span></a>
+    <a href="#manifeste"><span>Manifeste</span></a>
+    <a href="#univers"><span>Univers</span></a>
+    <a href="#services"><span>Services</span></a>
+    <a href="#galerie"><span>Galerie</span></a>
+    <a href="#processus"><span>Processus</span></a>
+    <a href="#projets"><span>Projets</span></a>
+    <a href="#chiffres"><span>Chiffres</span></a>
+    <a href="#temoignages"><span>Avis</span></a>
+    <a href="#faq"><span>FAQ</span></a>
+    <a href="#contact"><span>Contact</span></a>
+  </nav>
+
   <main>
     <section id="hero" class="hero">
       <p class="hero-kicker" data-reveal>Expérience interactive — 2026</p>
@@ -51,8 +70,21 @@
         <span class="line"><span class="word accent">la&nbsp;3D</span></span>
       </h1>
       <p class="hero-sub" data-reveal>Bougez la souris. Scrollez. Tout réagit.</p>
-      <a href="#univers" class="btn" data-magnetic><span>Commencer le voyage</span></a>
+      <a href="#manifeste" class="btn" data-magnetic><span>Commencer le voyage</span></a>
       <div class="scroll-hint"><span></span></div>
+    </section>
+
+    <!-- Manifeste : les mots s'allument au scroll -->
+    <section id="manifeste" class="home-manifesto" aria-labelledby="manifeste-title">
+      <p class="home-kicker" id="manifeste-title" data-reveal>Manifeste</p>
+      <p class="home-manifesto-text" data-words>
+        Nous croyons qu'un site ne se regarde pas&nbsp;: <span class="home-hl">il se traverse.</span>
+        Chez ORBITALE, chaque pixel a une masse et chaque geste une conséquence.
+        Nous mêlons code, design et physique pour fabriquer des mondes où l'on a
+        <span class="home-hl">envie de rester</span>&nbsp;— rapides, accessibles, et juste assez magiques
+        pour qu'on s'en souvienne.
+      </p>
+      <p class="home-manifesto-sign" data-reveal>— L'équipe ORBITALE, quelque part entre deux orbites</p>
     </section>
 
     <section id="univers" class="features">
@@ -79,6 +111,98 @@
       </div>
     </section>
 
+    <!-- Services : lignes numérotées + visuel qui suit la souris -->
+    <section id="services" class="home-services" aria-labelledby="services-title">
+      <div class="home-section-head">
+        <p class="home-kicker" data-reveal>Ce que l'on fabrique</p>
+        <h2 class="section-title" id="services-title" data-split>Services</h2>
+        <p class="home-lead" data-reveal>Cinq savoir-faire, une seule obsession&nbsp;: que chaque interaction ait du sens. Touchez une ligne pour en savoir plus.</p>
+      </div>
+      <div class="home-services-visual" id="home-services-visual" aria-hidden="true"><span></span></div>
+      <ol class="home-services-list" id="home-services-list" data-stagger>
+        <li class="home-service" data-grad="violet">
+          <h3 class="home-service-heading">
+            <button class="home-service-head" type="button" aria-expanded="false" aria-controls="svc-1" id="svc-1-btn">
+              <span class="home-service-num">01</span>
+              <span class="home-service-name">Sites immersifs</span>
+              <span class="home-service-tags">WebGL · Scroll · Motion</span>
+              <span class="home-service-icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="home-service-body" id="svc-1" role="region" aria-labelledby="svc-1-btn">
+            <div class="home-service-inner">
+              <p>Des sites qui racontent une histoire au rythme du scroll&nbsp;: scènes WebGL, transitions de page, typographie cinétique. Pensés pour charger vite et rester lisibles sur mobile.</p>
+              <ul class="home-chips"><li>Site vitrine</li><li>Lancement produit</li><li>Storytelling</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="home-service" data-grad="cyan">
+          <h3 class="home-service-heading">
+            <button class="home-service-head" type="button" aria-expanded="false" aria-controls="svc-2" id="svc-2-btn">
+              <span class="home-service-num">02</span>
+              <span class="home-service-name">Configurateurs 3D</span>
+              <span class="home-service-tags">Temps réel · E-commerce</span>
+              <span class="home-service-icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="home-service-body" id="svc-2" role="region" aria-labelledby="svc-2-btn">
+            <div class="home-service-inner">
+              <p>Vos produits en 3D temps réel&nbsp;: matières, couleurs, options et rendu réaliste directement dans le navigateur, reliés à votre catalogue et à votre tunnel de commande.</p>
+              <ul class="home-chips"><li>Personnalisation</li><li>Rendu PBR</li><li>Export d'images</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="home-service" data-grad="rose">
+          <h3 class="home-service-heading">
+            <button class="home-service-head" type="button" aria-expanded="false" aria-controls="svc-3" id="svc-3-btn">
+              <span class="home-service-num">03</span>
+              <span class="home-service-name">Installations interactives</span>
+              <span class="home-service-tags">Événementiel · Capteurs</span>
+              <span class="home-service-icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="home-service-body" id="svc-3" role="region" aria-labelledby="svc-3-btn">
+            <div class="home-service-inner">
+              <p>Écrans géants, capteurs de mouvement, projections&nbsp;: des dispositifs pour salons, musées et boutiques qui réagissent à la présence du public et se pilotent depuis une simple tablette.</p>
+              <ul class="home-chips"><li>Muséographie</li><li>Retail</li><li>Salons</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="home-service" data-grad="sunset">
+          <h3 class="home-service-heading">
+            <button class="home-service-head" type="button" aria-expanded="false" aria-controls="svc-4" id="svc-4-btn">
+              <span class="home-service-num">04</span>
+              <span class="home-service-name">Jeux web</span>
+              <span class="home-service-tags">Gameplay · Classements</span>
+              <span class="home-service-icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="home-service-body" id="svc-4" role="region" aria-labelledby="svc-4-btn">
+            <div class="home-service-inner">
+              <p>Des jeux courts, nerveux et rejouables, jouables partout sans installation. Parfaits pour engager une communauté, animer un lancement ou collecter des inscriptions sans friction.</p>
+              <ul class="home-chips"><li>Advergame</li><li>Concours</li><li>Multijoueur léger</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="home-service" data-grad="aurora">
+          <h3 class="home-service-heading">
+            <button class="home-service-head" type="button" aria-expanded="false" aria-controls="svc-5" id="svc-5-btn">
+              <span class="home-service-num">05</span>
+              <span class="home-service-name">Direction artistique</span>
+              <span class="home-service-tags">Identité · Prototypes</span>
+              <span class="home-service-icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="home-service-body" id="svc-5" role="region" aria-labelledby="svc-5-btn">
+            <div class="home-service-inner">
+              <p>Identité visuelle, motion design, sound design et prototypes&nbsp;: on définit l'univers et ses règles avant d'écrire la première ligne de code, pour que tout parle la même langue.</p>
+              <ul class="home-chips"><li>Moodboards</li><li>Motion</li><li>Design system</li></ul>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </section>
+
     <section id="galerie" class="showcase">
       <div class="showcase-sticky">
         <canvas id="showcase-canvas"></canvas>
@@ -89,18 +213,255 @@
       </div>
     </section>
 
-    <section id="chiffres" class="stats">
+    <!-- Processus : défilement horizontal épinglé (desktop) -->
+    <section id="processus" class="home-process" aria-labelledby="processus-title">
+      <div class="home-process-pin" id="home-process-pin">
+        <div class="home-process-head">
+          <div>
+            <p class="home-kicker" data-reveal>Comment on travaille</p>
+            <h2 class="section-title" id="processus-title" data-split>Processus</h2>
+          </div>
+          <div class="home-process-meter" aria-hidden="true">
+            <span class="home-process-count"><span id="home-process-current">01</span> / 04</span>
+            <span class="home-process-bar"><span id="home-process-fill"></span></span>
+          </div>
+        </div>
+        <ol class="home-process-track" id="home-process-track" data-stagger>
+          <li class="home-step">
+            <span class="home-step-num" aria-hidden="true">01</span>
+            <div class="home-step-body">
+              <p class="home-step-time">1 à 2 semaines</p>
+              <h3>Exploration</h3>
+              <p>Ateliers, références, contraintes techniques et objectifs mesurables. On ressort avec une intention claire, un périmètre chiffré et l'envie de s'y mettre.</p>
+              <ul class="home-chips"><li>Moodboard</li><li>Note d'intention</li><li>Planning</li></ul>
+            </div>
+          </li>
+          <li class="home-step">
+            <span class="home-step-num" aria-hidden="true">02</span>
+            <div class="home-step-body">
+              <p class="home-step-time">2 à 3 semaines</p>
+              <h3>Prototype</h3>
+              <p>On construit vite la scène clé, directement dans le navigateur&nbsp;: performances, sensations, lisibilité. Le prototype tranche les débats mieux qu'une maquette.</p>
+              <ul class="home-chips"><li>Démo jouable</li><li>Tests mobiles</li><li>Arbitrages</li></ul>
+            </div>
+          </li>
+          <li class="home-step">
+            <span class="home-step-num" aria-hidden="true">03</span>
+            <div class="home-step-body">
+              <p class="home-step-time">4 à 10 semaines</p>
+              <h3>Production</h3>
+              <p>Design final, développement, intégration des contenus et optimisation sur une vraie gamme d'appareils. Une démo chaque semaine, zéro effet tunnel.</p>
+              <ul class="home-chips"><li>Sprints hebdo</li><li>Recette</li><li>Accessibilité</li></ul>
+            </div>
+          </li>
+          <li class="home-step">
+            <span class="home-step-num" aria-hidden="true">04</span>
+            <div class="home-step-body">
+              <p class="home-step-time">1 semaine, puis suivi</p>
+              <h3>Lancement</h3>
+              <p>Mise en ligne, mesure d'audience, ajustements à chaud. On reste à vos côtés pour faire vivre l'expérience bien après le jour&nbsp;J.</p>
+              <ul class="home-chips"><li>Mise en ligne</li><li>Statistiques</li><li>Maintenance</li></ul>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Projets à la une -->
+    <section id="projets" class="home-projects" aria-labelledby="projets-title">
+      <div class="home-section-head home-section-head--row">
+        <div>
+          <p class="home-kicker" data-reveal>Sélection 2025 — 2026</p>
+          <h2 class="section-title" id="projets-title" data-split>À la une</h2>
+        </div>
+        <a href="projets.html" class="btn" data-magnetic><span>Voir tous les projets</span></a>
+      </div>
+      <div class="home-projects-grid">
+        <article class="home-project" data-tilt>
+          <a href="projets.html" class="home-project-inner" aria-labelledby="proj-1-title" aria-describedby="proj-1-desc">
+            <span class="home-project-visual home-project-visual--halo" aria-hidden="true"><span></span><span></span><span></span></span>
+            <div class="home-project-info">
+              <p class="home-project-meta">Site immersif · Horlogerie</p>
+              <h3 class="home-project-title" id="proj-1-title">Halo Nocturne</h3>
+              <p class="home-project-desc" id="proj-1-desc">Une montre qui se démonte au scroll, pièce par pièce, jusqu'au cœur du mouvement.</p>
+            </div>
+          </a>
+        </article>
+        <article class="home-project" data-tilt>
+          <a href="projets.html" class="home-project-inner" aria-labelledby="proj-2-title" aria-describedby="proj-2-desc">
+            <span class="home-project-visual home-project-visual--atlas" aria-hidden="true"><span></span><span></span></span>
+            <div class="home-project-info">
+              <p class="home-project-meta">Installation · Planétarium</p>
+              <h3 class="home-project-title" id="proj-2-title">Atlas Céleste</h3>
+              <p class="home-project-desc" id="proj-2-desc">Un ciel de douze mètres que les visiteurs redessinent du bout des doigts.</p>
+            </div>
+          </a>
+        </article>
+        <article class="home-project" data-tilt>
+          <a href="projets.html" class="home-project-inner" aria-labelledby="proj-3-title" aria-describedby="proj-3-desc">
+            <span class="home-project-visual home-project-visual--velours" aria-hidden="true"><span></span><span></span><span></span></span>
+            <div class="home-project-info">
+              <p class="home-project-meta">Configurateur 3D · Mobilier</p>
+              <h3 class="home-project-title" id="proj-3-title">Velours</h3>
+              <p class="home-project-desc" id="proj-3-desc">Vingt-quatre tissus, rendu en temps réel et commande en un clic depuis le canapé.</p>
+            </div>
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <section id="chiffres" class="stats stats--four" aria-labelledby="chiffres-title">
+      <h2 class="home-sr" id="chiffres-title">ORBITALE en chiffres</h2>
       <div class="stat"><span class="stat-num" data-count="60">0</span><span class="stat-unit">FPS</span><p>Fluidité visée</p></div>
       <div class="stat"><span class="stat-num" data-count="4000">0</span><span class="stat-unit">+</span><p>Particules animées</p></div>
+      <div class="stat"><span class="stat-num" data-count="48">0</span><span class="stat-unit">projets</span><p>Livrés depuis 2019</p></div>
       <div class="stat"><span class="stat-num" data-count="0">0</span><span class="stat-unit">ligne de Java</span><p>Promis, juré</p></div>
+    </section>
+
+    <!-- Témoignages : carrousel -->
+    <section id="temoignages" class="home-testi" aria-labelledby="temoignages-title">
+      <div class="home-section-head home-section-head--center">
+        <p class="home-kicker" data-reveal>Ils nous ont fait confiance</p>
+        <h2 class="section-title" id="temoignages-title" data-split>Ils en parlent</h2>
+      </div>
+      <div class="home-testi-carousel" id="home-testi" data-reveal role="region" aria-roledescription="carrousel" aria-label="Témoignages de clients">
+        <div class="home-testi-viewport" id="home-testi-viewport" aria-live="off">
+          <figure class="home-testi-slide is-active" role="group" aria-roledescription="diapositive" aria-label="1 sur 4">
+            <blockquote><p>Ils ont transformé une simple fiche produit en véritable expérience. Les visiteurs restent trois fois plus longtemps qu'avant, et surtout, ils en parlent autour d'eux.</p></blockquote>
+            <figcaption><span class="home-testi-avatar" aria-hidden="true">CR</span><span><strong>Camille R.</strong><span>Directrice marketing, marque de mobilier</span></span></figcaption>
+          </figure>
+          <figure class="home-testi-slide" role="group" aria-roledescription="diapositive" aria-label="2 sur 4">
+            <blockquote><p>Une équipe qui sait dire non à un effet gratuit. Tout ce qui bouge sert le propos, et tout tourne sans accroc, même sur le vieux téléphone de notre directeur.</p></blockquote>
+            <figcaption><span class="home-testi-avatar" aria-hidden="true">JM</span><span><strong>Julien M.</strong><span>Responsable numérique, institution culturelle</span></span></figcaption>
+          </figure>
+          <figure class="home-testi-slide" role="group" aria-roledescription="diapositive" aria-label="3 sur 4">
+            <blockquote><p>Le prototype livré en deux semaines a convaincu notre comité en une seule réunion. La suite a été aussi fluide que leurs animations.</p></blockquote>
+            <figcaption><span class="home-testi-avatar" aria-hidden="true">SB</span><span><strong>Sofia B.</strong><span>Cheffe de projet, agence événementielle</span></span></figcaption>
+          </figure>
+          <figure class="home-testi-slide" role="group" aria-roledescription="diapositive" aria-label="4 sur 4">
+            <blockquote><p>Notre jeu de lancement a été joué plus de 80&nbsp;000 fois le premier mois. On n'avait jamais obtenu un tel engagement avec une campagne classique.</p></blockquote>
+            <figcaption><span class="home-testi-avatar" aria-hidden="true">TK</span><span><strong>Thomas K.</strong><span>Fondateur, start-up audio</span></span></figcaption>
+          </figure>
+        </div>
+        <div class="home-testi-controls">
+          <button class="home-testi-arrow" type="button" data-testi-prev aria-label="Témoignage précédent">←</button>
+          <div class="home-testi-dots" role="group" aria-label="Choisir un témoignage">
+            <button class="home-testi-dot is-active" type="button" aria-label="Témoignage 1" aria-current="true"><span></span></button>
+            <button class="home-testi-dot" type="button" aria-label="Témoignage 2"><span></span></button>
+            <button class="home-testi-dot" type="button" aria-label="Témoignage 3"><span></span></button>
+            <button class="home-testi-dot" type="button" aria-label="Témoignage 4"><span></span></button>
+          </div>
+          <button class="home-testi-arrow" type="button" data-testi-next aria-label="Témoignage suivant">→</button>
+          <button class="home-testi-toggle" type="button" data-testi-toggle aria-label="Mettre en pause le défilement automatique">Pause</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Clients : bandeau typographique -->
+    <section id="clients" class="home-clients" aria-labelledby="clients-title">
+      <h2 class="home-kicker home-clients-title" id="clients-title">Ils ont embarqué avec nous</h2>
+      <div class="home-logos" data-logos>
+        <ul class="home-logos-track" aria-label="Clients (noms fictifs)">
+          <li class="home-logo home-logo--serif">Maison Vellure</li>
+          <li class="home-logo home-logo--wide">KASKAD</li>
+          <li class="home-logo home-logo--outline">Fjordine</li>
+          <li class="home-logo home-logo--mono">opaline/records</li>
+          <li class="home-logo home-logo--grad">Ombrelune</li>
+          <li class="home-logo home-logo--serif">Arcadie Mobilité</li>
+          <li class="home-logo home-logo--wide">GALVANE</li>
+          <li class="home-logo home-logo--outline">Zéphyrine</li>
+          <li class="home-logo home-logo--mono">studio·halden</li>
+          <li class="home-logo home-logo--grad">Mirabelle&nbsp;&amp;&nbsp;Fils</li>
+        </ul>
+      </div>
+      <div class="home-logos home-logos--reverse" data-logos aria-hidden="true">
+        <ul class="home-logos-track">
+          <li class="home-logo home-logo--outline">Nordlys Optique</li>
+          <li class="home-logo home-logo--mono">pixelhalle</li>
+          <li class="home-logo home-logo--grad">Ciel&nbsp;Bas</li>
+          <li class="home-logo home-logo--wide">VOLTIGE</li>
+          <li class="home-logo home-logo--serif">Les Ateliers Corail</li>
+          <li class="home-logo home-logo--outline">Brumaire</li>
+          <li class="home-logo home-logo--mono">onde.carrée</li>
+          <li class="home-logo home-logo--wide">SÉLÉNIA</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="home-faq" aria-labelledby="faq-title">
+      <div class="home-section-head">
+        <p class="home-kicker" data-reveal>Questions fréquentes</p>
+        <h2 class="section-title" id="faq-title" data-split>FAQ</h2>
+        <p class="home-lead" data-reveal>Tout ce qu'on nous demande avant de se lancer. Une autre question&nbsp;? <a href="contact.html" class="home-link">Écrivez-nous</a>.</p>
+      </div>
+      <div class="home-faq-list" data-stagger>
+        <details class="home-faq-item">
+          <summary>Combien coûte une expérience 3D&nbsp;?</summary>
+          <div class="home-faq-answer"><p>Tout dépend du périmètre&nbsp;: une page immersive ne demande pas le même travail qu'un configurateur relié à un catalogue. Après un premier échange de trente minutes, on vous envoie une estimation détaillée, découpée par étapes, sous 72&nbsp;heures.</p></div>
+        </details>
+        <details class="home-faq-item">
+          <summary>Quels sont les délais habituels&nbsp;?</summary>
+          <div class="home-faq-answer"><p>Comptez de 6 à 16 semaines entre l'exploration et la mise en ligne. Un prototype jouable arrive généralement au bout de trois semaines, ce qui permet de valider la direction très tôt.</p></div>
+        </details>
+        <details class="home-faq-item">
+          <summary>Est-ce que ça fonctionne sur mobile&nbsp;?</summary>
+          <div class="home-faq-answer"><p>Oui, et c'est même par là qu'on commence. Chaque scène est testée sur des téléphones d'entrée de gamme&nbsp;; si un appareil peine, l'expérience s'adapte automatiquement (moins de particules, effets simplifiés) sans casser le parcours.</p></div>
+        </details>
+        <details class="home-faq-item">
+          <summary>La 3D nuit-elle au référencement ou à l'accessibilité&nbsp;?</summary>
+          <div class="home-faq-answer"><p>Non, si elle est bien construite. Le contenu reste du vrai HTML, lisible par les moteurs de recherche et les lecteurs d'écran. Nous respectons le réglage «&nbsp;réduire les animations&nbsp;» et la navigation au clavier sur chaque projet.</p></div>
+        </details>
+        <details class="home-faq-item">
+          <summary>Pouvez-vous travailler avec notre équipe ou notre agence&nbsp;?</summary>
+          <div class="home-faq-answer"><p>Avec plaisir. Nous intervenons souvent en renfort d'équipes internes ou d'agences de communication, sur la partie 3D et interactive, avec un code documenté que vos développeurs peuvent reprendre.</p></div>
+        </details>
+        <details class="home-faq-item">
+          <summary>Que se passe-t-il après la mise en ligne&nbsp;?</summary>
+          <div class="home-faq-answer"><p>On mesure, on ajuste et on reste joignables. Un forfait de maintenance couvre les mises à jour des navigateurs, les correctifs et de petites évolutions&nbsp;; vous pouvez aussi reprendre la main à tout moment.</p></div>
+        </details>
+      </div>
+    </section>
+
+    <!-- Tuiles vers les autres pages -->
+    <section id="explorer" class="home-explore" aria-labelledby="explorer-title">
+      <div class="home-section-head home-section-head--center">
+        <p class="home-kicker" data-reveal>Continuer l'exploration</p>
+        <h2 class="section-title" id="explorer-title" data-split>Encore un tour</h2>
+      </div>
+      <div class="home-explore-grid" data-stagger>
+        <a href="labo.html" class="home-tile home-tile--labo">
+          <span class="home-tile-art" aria-hidden="true"><span></span><span></span></span>
+          <span class="home-tile-kicker">Labo</span>
+          <span class="home-tile-title">Joue avec la 3D</span>
+          <span class="home-tile-text">Des expériences à manipuler, sans mode d'emploi.</span>
+          <span class="home-tile-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="jeu.html" class="home-tile home-tile--jeu">
+          <span class="home-tile-art" aria-hidden="true"><span></span><span></span></span>
+          <span class="home-tile-kicker">Jeu</span>
+          <span class="home-tile-title">Bats le record</span>
+          <span class="home-tile-text">Un mini-jeu en orbite. Trente secondes, une seule vie.</span>
+          <span class="home-tile-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="studio.html" class="home-tile home-tile--studio">
+          <span class="home-tile-art" aria-hidden="true"><span></span><span></span></span>
+          <span class="home-tile-kicker">Studio</span>
+          <span class="home-tile-title">Rencontre l'équipe</span>
+          <span class="home-tile-text">Les humains (et le chat) derrière les pixels.</span>
+          <span class="home-tile-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
     </section>
 
     <section id="contact" class="contact">
       <div class="marquee"><div class="marquee-track">ORBITALE ✦ 3D ✦ ANIMATIONS ✦ ORBITALE ✦ 3D ✦ ANIMATIONS ✦&nbsp;</div></div>
       <h2 class="contact-title" data-split>Prêt à décoller ?</h2>
-      <a href="mailto:contact@example.com" class="btn btn-big" data-magnetic><span>Écrivez-nous</span></a>
+      <p class="home-contact-sub" data-reveal>Un projet, une idée floue, une simple curiosité&nbsp;? On répond sous 48&nbsp;heures.</p>
+      <a href="contact.html" class="btn btn-big" data-magnetic><span>Parlons de votre projet</span></a>
     </section>
   </main>
+
 
   <footer class="footer">
     <div class="footer-grid">

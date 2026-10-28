@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projets — ORBITALE</title>
+  <meta name="description" content="Huit expériences 3D signées ORBITALE : sites immersifs, installations, jeux et configurateurs temps réel. Explorez-les en orbite, filtrez-les, ouvrez-les en 3D.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/projets.css">
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="js/projets.js"></script>
+</head>
+<body data-page="projets">
+  <div class="curtain is-covering" aria-hidden="true"></div>
+
+  <!-- Fond animé en CSS : halos qui dérivent + grain -->
+  <div class="pj-bg" aria-hidden="true">
+    <span class="pj-bg-blob pj-bg-blob--1"></span>
+    <span class="pj-bg-blob pj-bg-blob--2"></span>
+    <span class="pj-bg-blob pj-bg-blob--3"></span>
+    <svg class="pj-bg-noise" width="100%" height="100%" focusable="false">
+      <filter id="pj-noise-filter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/>
+        <feColorMatrix type="saturate" values="0"/>
+      </filter>
+      <rect width="100%" height="100%" filter="url(#pj-noise-filter)"/>
+    </svg>
+  </div>
+
+  <header class="nav">
+    <a href="index.html" class="nav-logo">ORBITALE<span>.</span></a>
+    <nav class="nav-links" id="nav-links" aria-label="Navigation principale">
+      <a href="index.html" data-magnetic>Accueil</a>
+      <a href="projets.html" data-magnetic>Projets</a>
+      <a href="labo.html" data-magnetic>Labo</a>
+      <a href="studio.html" data-magnetic>Studio</a>
+      <a href="jeu.html" data-magnetic>Jeu</a>
+      <a href="contact.html" data-magnetic>Contact</a>
+    </nav>
+    <button class="nav-burger" id="nav-burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
+  </header>
+
+  <main id="contenu">
+    <!-- ================================================================ -->
+    <!-- Hero                                                              -->
+    <!-- ================================================================ -->
+    <section class="pj-hero" aria-labelledby="pj-hero-title">
+      <p class="pj-kicker">Portfolio · 2024 → 2026</p>
+      <h1 class="pj-hero-title" id="pj-hero-title" data-letters>Nos projets</h1>
+      <p class="pj-hero-sub">
+        Des galaxies qu'on traverse du bout du doigt, des murs qui respirent, des jeux qu'on lance
+        dans une file d'attente et des objets qu'on assemble avant de les commander.
+        Chaque projet est né d'une question simple&nbsp;: <em>et si on pouvait le toucher&nbsp;?</em>
+      </p>
+      <dl class="pj-hero-counts">
+        <div>
+          <dt>Projets en ligne</dt>
+          <dd><span class="pj-count" data-count="8" data-pad="2">08</span></dd>
+        </div>
+        <div>
+          <dt>Disciplines</dt>
+          <dd><span class="pj-count" data-count="4" data-pad="2">04</span></dd>
+        </div>
+        <div>
+          <dt>Années de production</dt>
+          <dd><span class="pj-count" data-count="3" data-pad="2">03</span></dd>
+        </div>
+      </dl>
+      <a class="pj-hero-scroll" href="#orbite">
+        <span class="pj-hero-scroll-line" aria-hidden="true"></span>
+        Entrer en orbite
+      </a>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Carrousel 3D                                                      -->
+    <!-- ================================================================ -->
+    <section class="pj-orbit" id="orbite" aria-labelledby="pj-orbit-title">
+      <div class="pj-head" data-reveal>
+        <p class="pj-kicker">01 — Sélection</p>
+        <h2 class="section-title" id="pj-orbit-title">En <span class="accent">orbite</span></h2>
+        <p class="pj-lead">
+          Glissez, faites défiler la molette au-dessus de l'anneau ou utilisez les flèches du clavier.
+          La carte de face s'ouvre d'un clic.
+        </p>
+      </div>
+
+      <div class="pj-ring-stage" id="pj-ring-stage" role="region" aria-roledescription="carrousel" aria-label="Carrousel 3D des projets">
+        <div class="pj-ring-floor" aria-hidden="true"></div>
+        <div class="pj-ring" id="pj-ring"></div>
+      </div>
+
+      <div class="pj-ring-ui">
+        <button class="pj-round" type="button" id="pj-ring-prev" aria-label="Projet précédent" aria-controls="pj-ring">←</button>
+        <div class="pj-ring-now" aria-hidden="true">
+          <span class="pj-ring-now-num" id="pj-ring-num">01 / 08</span>
+          <span class="pj-ring-now-title" id="pj-ring-title">—</span>
+          <span class="pj-ring-now-cat" id="pj-ring-cat">—</span>
+        </div>
+        <button class="pj-round" type="button" id="pj-ring-next" aria-label="Projet suivant" aria-controls="pj-ring">→</button>
+        <button class="pj-pause" type="button" id="pj-ring-pause" aria-pressed="false">
+          <span class="pj-pause-icon" aria-hidden="true"></span>
+          <span class="pj-pause-label">Pause</span>
+        </button>
+      </div>
+      <div class="pj-ring-dots" id="pj-ring-dots" role="group" aria-label="Aller directement à un projet"></div>
+      <p class="pj-sr" id="pj-ring-live" aria-live="polite"></p>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Index filtrable                                                   -->
+    <!-- ================================================================ -->
+    <section class="pj-index" id="index" aria-labelledby="pj-index-title">
+      <div class="pj-head pj-head--split" data-reveal>
+        <div>
+          <p class="pj-kicker">02 — Index</p>
+          <h2 class="section-title" id="pj-index-title">Toute <span class="accent">l'archive</span></h2>
+        </div>
+        <p class="pj-lead">
+          Quatre disciplines, une même obsession&nbsp;: que la 3D serve le propos.
+          Filtrez par type de projet puis ouvrez une fiche pour manipuler son objet en temps réel.
+        </p>
+      </div>
+
+      <div class="pj-filters" id="pj-filters" role="group" aria-label="Filtrer les projets par catégorie" data-reveal>
+        <button class="pj-filter" type="button" data-filter="all" aria-pressed="true">Tous <span class="pj-filter-n"></span></button>
+        <button class="pj-filter" type="button" data-filter="web" aria-pressed="false">Web immersif <span class="pj-filter-n"></span></button>
+        <button class="pj-filter" type="button" data-filter="installation" aria-pressed="false">Installation <span class="pj-filter-n"></span></button>
+        <button class="pj-filter" type="button" data-filter="jeu" aria-pressed="false">Jeu <span class="pj-filter-n"></span></button>
+        <button class="pj-filter" type="button" data-filter="configurateur" aria-pressed="false">Configurateur <span class="pj-filter-n"></span></button>
+      </div>
+      <p class="pj-grid-status" id="pj-grid-status" aria-live="polite"></p>
+
+      <ul class="pj-grid" id="pj-grid"></ul>
+      <noscript><p class="pj-lead">Activez JavaScript pour parcourir les projets en 3D.</p></noscript>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Chiffres & distinctions                                           -->
+    <!-- ================================================================ -->
+    <section class="pj-awards" aria-labelledby="pj-awards-title">
+      <div class="pj-head" data-reveal>
+        <p class="pj-kicker">03 — Impact</p>
+        <h2 class="section-title" id="pj-awards-title">Ce que ça <span class="accent">donne</span></h2>
+      </div>
+
+      <ul class="pj-figures">
+        <li class="pj-figure" data-reveal>
+          <span class="pj-figure-num"><span class="pj-count" data-count="2.4" data-decimals="1">2,4</span>&nbsp;M</span>
+          <span class="pj-figure-label">visiteurs cumulés sur nos expériences en ligne</span>
+        </li>
+        <li class="pj-figure" data-reveal>
+          <span class="pj-figure-num"><span class="pj-count" data-count="14">14</span></span>
+          <span class="pj-figure-label">distinctions de jurys créatifs depuis 2024</span>
+        </li>
+        <li class="pj-figure" data-reveal>
+          <span class="pj-figure-num"><span class="pj-count" data-count="11">11</span>&nbsp;min</span>
+          <span class="pj-figure-label">de temps d'engagement moyen par visite</span>
+        </li>
+        <li class="pj-figure" data-reveal>
+          <span class="pj-figure-num"><span class="pj-count" data-count="92">92</span>&nbsp;%</span>
+          <span class="pj-figure-label">de clients qui reviennent pour un second projet</span>
+        </li>
+      </ul>
+
+      <div class="pj-awards-list" data-reveal>
+        <h3 class="pj-awards-sub">Distinctions récentes</h3>
+        <ol class="pj-award-rows">
+          <li class="pj-award">
+            <span class="pj-award-year">2026</span>
+            <span class="pj-award-name">Grand prix de l'expérience immersive</span>
+            <span class="pj-award-project">Nébuleuse</span>
+            <span class="pj-award-org">Rencontres Nouvelles Dimensions</span>
+          </li>
+          <li class="pj-award">
+            <span class="pj-award-year">2026</span>
+            <span class="pj-award-name">Meilleur configurateur temps réel</span>
+            <span class="pj-award-project">Lumen</span>
+            <span class="pj-award-org">Trophées Horizon Interactif</span>
+          </li>
+          <li class="pj-award">
+            <span class="pj-award-year">2025</span>
+            <span class="pj-award-name">Prix du public — installation</span>
+            <span class="pj-award-project">Atlas Sonore</span>
+            <span class="pj-award-org">Festival Lumière &amp; Code</span>
+          </li>
+          <li class="pj-award">
+            <span class="pj-award-year">2025</span>
+            <span class="pj-award-name">Jeu de navigateur de l'année</span>
+            <span class="pj-award-project">Gravité Zéro</span>
+            <span class="pj-award-org">Palmarès des Jeux Indépendants</span>
+          </li>
+          <li class="pj-award">
+            <span class="pj-award-year">2025</span>
+            <span class="pj-award-name">Mention spéciale — direction artistique</span>
+            <span class="pj-award-project">Monolithe</span>
+            <span class="pj-award-org">Semaine des Mondes Interactifs</span>
+          </li>
+          <li class="pj-award">
+            <span class="pj-award-year">2024</span>
+            <span class="pj-award-name">Site du mois — catégorie culture</span>
+            <span class="pj-award-project">Prisme</span>
+            <span class="pj-award-org">Collectif Pixel Libre</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Processus résumé                                                  -->
+    <!-- ================================================================ -->
+    <section class="pj-process" aria-labelledby="pj-process-title">
+      <div class="pj-head pj-head--split" data-reveal>
+        <div>
+          <p class="pj-kicker">04 — Méthode</p>
+          <h2 class="section-title" id="pj-process-title">De l'idée <span class="accent">au monde</span></h2>
+        </div>
+        <p class="pj-lead">
+          Chaque projet suit le même rythme en quatre temps. On prototype tôt, on teste sur de vrais
+          appareils dès la deuxième semaine et on ne lance rien qui ne tienne pas 60 images par seconde.
+        </p>
+      </div>
+
+      <ol class="pj-steps">
+        <li class="pj-step" data-reveal>
+          <span class="pj-step-num">01</span>
+          <h3>Immersion</h3>
+          <p>Ateliers avec vos équipes, analyse du public, références visuelles. On ressort avec une promesse d'expérience d'une phrase.</p>
+          <span class="pj-step-time">1 à 2 semaines</span>
+        </li>
+        <li class="pj-step" data-reveal>
+          <span class="pj-step-num">02</span>
+          <h3>Prototype</h3>
+          <p>Une maquette jouable dans le navigateur, brute mais fonctionnelle, pour valider les sensations avant le moindre pixel final.</p>
+          <span class="pj-step-time">2 à 3 semaines</span>
+        </li>
+        <li class="pj-step" data-reveal>
+          <span class="pj-step-num">03</span>
+          <h3>Production</h3>
+          <p>Shaders, modélisation procédurale, son, contenus. Des démos chaque vendredi et un budget de performance suivi à la milliseconde.</p>
+          <span class="pj-step-time">6 à 12 semaines</span>
+        </li>
+        <li class="pj-step" data-reveal>
+          <span class="pj-step-num">04</span>
+          <h3>Lancement</h3>
+          <p>Tests multi-appareils, accessibilité, mise en ligne ou installation sur site, puis trois mois de suivi et d'optimisation.</p>
+          <span class="pj-step-time">2 semaines + suivi</span>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- Appel à l'action                                                  -->
+    <!-- ================================================================ -->
+    <section class="pj-cta" aria-labelledby="pj-cta-title">
+      <div class="pj-cta-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+      <p class="pj-kicker" data-reveal>05 — Et maintenant&nbsp;?</p>
+      <h2 class="pj-cta-title" id="pj-cta-title" data-reveal>Le neuvième projet,<br><span class="accent">c'est le vôtre.</span></h2>
+      <p class="pj-cta-text" data-reveal>Racontez-nous votre idée, même floue. On vous répond sous 48&nbsp;heures avec une première piste.</p>
+      <div data-reveal>
+        <a href="contact.html" class="btn btn-big" data-magnetic><span>Lancer un projet</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">ORBITALE<span>.</span></a>
+        <p>Studio d'expériences 3D interactives. On transforme les idées en mondes qu'on peut toucher.</p>
+      </div>
+      <div>
+        <h4>Explorer</h4>
+        <nav class="footer-links" aria-label="Pages">
+          <a href="index.html">Accueil</a>
+          <a href="projets.html">Projets</a>
+          <a href="labo.html">Labo</a>
+          <a href="studio.html">Studio</a>
+        </nav>
+      </div>
+      <div>
+        <h4>Plus</h4>
+        <nav class="footer-links" aria-label="Autres pages">
+          <a href="jeu.html">Jeu</a>
+          <a href="contact.html">Contact</a>
+          <a href="mentions.html">Mentions légales</a>
+        </nav>
+      </div>
+      <button class="footer-top" type="button" data-back-to-top aria-label="Retour en haut">↑</button>
+    </div>
+    <p class="footer-copy">© 2026 ORBITALE — fait avec Three.js &amp; GSAP. Zéro ligne de Java.</p>
+  </footer>
+
+  <!-- ================================================================== -->
+  <!-- Modale de détail (un seul canvas WebGL partagé)                     -->
+  <!-- ================================================================== -->
+  <div class="pj-modal" id="pj-modal" role="dialog" aria-modal="true" aria-labelledby="pj-modal-title" aria-describedby="pj-modal-desc">
+    <div class="pj-modal-panel">
+      <div class="pj-modal-preview" id="pj-modal-preview">
+        <div class="pj-modal-fallback" id="pj-modal-fallback" aria-hidden="true"></div>
+        <canvas class="pj-modal-canvas" id="pj-modal-canvas" aria-hidden="true"></canvas>
+        <p class="pj-modal-hint" aria-hidden="true">Bougez la souris pour faire pivoter l'objet</p>
+        <span class="pj-modal-index" id="pj-modal-index" aria-hidden="true">01 / 08</span>
+      </div>
+
+      <div class="pj-modal-info" id="pj-modal-info">
+        <p class="pj-kicker" id="pj-modal-kicker">—</p>
+        <h2 class="pj-modal-title" id="pj-modal-title">—</h2>
+        <p class="pj-modal-desc" id="pj-modal-desc">—</p>
+
+        <dl class="pj-modal-meta">
+          <div><dt>Client</dt><dd id="pj-modal-client">—</dd></div>
+          <div><dt>Rôle</dt><dd id="pj-modal-role">—</dd></div>
+          <div><dt>Durée</dt><dd id="pj-modal-duration">—</dd></div>
+          <div><dt>Année</dt><dd id="pj-modal-year">—</dd></div>
+        </dl>
+
+        <h3 class="pj-modal-sub">Technologies</h3>
+        <ul class="pj-modal-tech" id="pj-modal-tech"></ul>
+
+        <h3 class="pj-modal-sub">Résultats</h3>
+        <ul class="pj-modal-results" id="pj-modal-results"></ul>
+
+        <div class="pj-modal-nav">
+          <button class="pj-modal-step" type="button" id="pj-modal-prev">
+            <span class="pj-modal-step-dir">← Projet précédent</span>
+            <span class="pj-modal-step-name" id="pj-modal-prev-name">—</span>
+          </button>
+          <button class="pj-modal-step pj-modal-step--next" type="button" id="pj-modal-next">
+            <span class="pj-modal-step-dir">Projet suivant →</span>
+            <span class="pj-modal-step-name" id="pj-modal-next-name">—</span>
+          </button>
+        </div>
+
+        <a href="contact.html" class="btn pj-modal-cta"><span>Un projet similaire&nbsp;?</span></a>
+      </div>
+    </div>
+    <button class="pj-modal-close" type="button" id="pj-modal-close" aria-label="Fermer la fiche projet">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+  </div>
+</body>
+</html>
